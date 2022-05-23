@@ -18,7 +18,7 @@ public class Customer {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "customer")
     private List<Purchase> purchases;
 
     public Customer() {}
