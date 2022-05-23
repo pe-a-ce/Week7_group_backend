@@ -2,6 +2,7 @@ package com.bnta.ecommerce.services;
 
 import com.bnta.ecommerce.models.Product;
 import com.bnta.ecommerce.repositories.ProductRepository;
+import com.bnta.ecommerce.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,6 @@ public class ProductService {
         if (inStockRequired){
             stock = 1;
         }
-        return productRepository.findByStockGreaterThanEqual(stock);
+        return productRepository.findInStockProducts(stock);
     }
 }
