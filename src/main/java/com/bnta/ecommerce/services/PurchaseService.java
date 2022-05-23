@@ -23,8 +23,25 @@ public class PurchaseService {
 
     public List getAll() { return purchaseRepository.findAll();}
 
-
     public Optional<Purchase> findByPurchaseId(Long id) {
     return purchaseRepository.findById(id);
+    }
+
+    public List<Purchase> search(Long customerId,
+                                 Integer minQuantity,
+                                 Integer maxQuantity,
+                                 String fromDate,
+                                 String toDate,
+                                 String category) {
+
+        System.out.println("customerId: " + customerId);
+        System.out.println("minQuantity: " + minQuantity);
+        System.out.println("maxQuantity: " + maxQuantity);
+        System.out.println("fromDate: " + fromDate);
+        System.out.println("toDate: " + toDate);
+        System.out.println("category: " + category);
+
+        return null;
+//        return purchaseRepository.searchAll();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,11 +37,29 @@ public class PurchaseController {
             return ResponseEntity.ok().body(purchaseIdOptional.get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/purchases")
+    public ResponseEntity<List<Purchase>> searchPurchases(
+            @RequestParam(required = false) Optional<Long> customerId,
+            @RequestParam(required = false, defaultValue = "0") Integer minQuantity,
+            @RequestParam(required = false, defaultValue = "2000") Integer maxQuantity,
+            @RequestParam(required = false, defaultValue = "1000-01-01") String fromDate,
+            @RequestParam(required = false, defaultValue = "4000-01-01") String toDate,
+            @RequestParam(required = false) Optional<String> category
+    ) {
+
+        System.out.println(customerId.isPresent());
+
+        return ResponseEntity
+                .ok()
+                .body(
+                        purchaseService.search(1L, minQuantity, maxQuantity, fromDate, toDate, null)
+                );
+    }
 
     // Get Purchase by customer id
 
 
     // Get purchase by category name
-
-    }
 }
