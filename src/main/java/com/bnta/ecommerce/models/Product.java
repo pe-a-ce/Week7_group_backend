@@ -20,6 +20,7 @@ public class Product {
 
     @JsonIgnoreProperties({"product"})
     @OneToOne(mappedBy = "product")
+    @JsonIgnoreProperties({"product"})
     private Stock stock;
 
     public Product() {}
