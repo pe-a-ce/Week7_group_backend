@@ -26,11 +26,11 @@ public class StockController {
     }
 
 
-    @GetMapping("/stock")
+    @GetMapping("/stock") // Get All Stock
     public ResponseEntity<List<Stock>> getAll(){
     return ResponseEntity.ok().body(stockService.getAll());}
 
-    @GetMapping("/stock/{id}")
+    @GetMapping("/stock/{id}") // Get All Stock by id
         public ResponseEntity<Stock> findByID(@PathVariable Long id){
         Optional<Stock> stockOptional = stockService.findById(id);
         if (stockOptional.isPresent()){
@@ -40,6 +40,8 @@ public class StockController {
     }
 }
 
+/*
 
+ */
 
 

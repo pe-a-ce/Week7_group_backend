@@ -30,7 +30,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getAllProducts());
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search") // Get Product, by various optional parameters
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
             @RequestParam(required = false, name = "Category") String category,

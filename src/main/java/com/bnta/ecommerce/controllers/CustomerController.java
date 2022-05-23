@@ -25,11 +25,11 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customers")
+    @GetMapping("/customers") // Get All Customers
     public ResponseEntity<List<Customer>> getAllCustomers(){
         return ResponseEntity.ok().body(customerService.getAll());
 }
-    @GetMapping("customers/{id}")
+    @GetMapping("customers/{id}") // Get All Customers by id
     public ResponseEntity<Customer> findByID(@PathVariable Long id){
         Optional<Customer> customerOptional = customerService.findById(id);
         if (customerOptional.isPresent()){
