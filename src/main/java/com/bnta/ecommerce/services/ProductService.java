@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -25,11 +26,20 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> returnRelevantProducts(Boolean inStockRequired){
-        int stock = 0;
-        if (inStockRequired){
-            stock = 1;
+    public List<Product> returnRelevantProducts(Boolean inStockRequired, String category, Double minPrice, Double maxPrice) throws Exception{
+
+        if (minPrice > maxPrice){
+            throw new Exception("Minimum price must be lower than maximum price!");
         }
-        return productRepository.findInStockProducts(stock);
+        int stock = inStockRequired ? 1 : 0;
+
+        List<Product> inStock = productRepository.findInStockProducts(stock);
+        List<Product> priceRange = productRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
+        List<Product> result = inStock.stream().filter(priceRange::contains).collect(Collectors.toList());
+        if (category != null){
+            List<Product> inCategory = productRepository.findByCategoryIgnoreCase(category);
+            result = result.stream().filter(inCategory::contains).collect(Collectors.toList());
+        }
+        return result;
     }
 }

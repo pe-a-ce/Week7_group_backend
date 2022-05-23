@@ -13,4 +13,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM product WHERE product.id in (SELECT stock.id FROM product JOIN stock on product.id = stock.product_id WHERE quantity >= ?1)",
             nativeQuery = true)
     List<Product> findInStockProducts(Integer quantity);
+
+    List<Product> findByCategoryIgnoreCase(String category);
+
+    List<Product> findByPriceGreaterThanEqualAndPriceLessThanEqual(Double minPrice, Double maxPrice);
 }
