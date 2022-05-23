@@ -17,6 +17,8 @@ public class Customer {
     private String email;
     @Column(name = "password")
     private String password;
+    @Column(name = "wallet")
+    private Double wallet;
 
     @OneToMany(mappedBy = "customer")
     private List<Purchase> purchases;
@@ -27,12 +29,16 @@ public class Customer {
                     String name,
                     String username,
                     String email,
-                    String password) {
+                    String password,
+                    Double wallet,
+                    List<Purchase> purchases) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.wallet = wallet;
+        this.purchases = purchases;
     }
 
     public Long getId() {
@@ -73,5 +79,21 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(Double wallet) {
+        this.wallet = wallet;
+    }
+
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 }
