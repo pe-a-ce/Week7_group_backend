@@ -1,5 +1,7 @@
 package com.bnta.ecommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
