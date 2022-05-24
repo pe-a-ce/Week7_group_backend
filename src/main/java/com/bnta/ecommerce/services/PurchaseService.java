@@ -68,6 +68,6 @@ public class PurchaseService {
                 maxQuantity,
                 fromDate,
                 toDate,
-                "%"+manufacturer+"%");
+                "%"+manufacturer.trim()+"%");
     }
 }

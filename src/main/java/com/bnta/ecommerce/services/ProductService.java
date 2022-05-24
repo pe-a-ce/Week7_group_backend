@@ -35,7 +35,7 @@ public class ProductService {
         List<Product> priceRange = productRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
         List<Product> result = inStock.stream().filter(priceRange::contains).collect(Collectors.toList());
         if (manufacturer != null){
-            List<Product> byManufacturer = productRepository.findByManufacturerIgnoreCase(manufacturer);
+            List<Product> byManufacturer = productRepository.findByManufacturerIgnoreCase("%" + manufacturer.trim() + "%");
             if (byManufacturer.isEmpty()){
                 throw new Exception("No cars by this manufacturer stocked!");
             }
@@ -54,7 +54,7 @@ public class ProductService {
     }
 
     public List<Product> searchByManufacturerAndModel(String manufacturer, String model) throws Exception {
-        List<Product> result = productRepository.findByManufacturerModel(manufacturer, model);
+        List<Product> result = productRepository.findByManufacturerModel("%" + manufacturer.trim() + "%", "%" + model.trim() + "%");
         if(result.isEmpty()){
             throw new Exception("No cars found!");
         }
