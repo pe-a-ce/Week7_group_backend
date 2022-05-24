@@ -48,7 +48,6 @@ public class PurchaseController {
         catch (RuntimeException re) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
         }
-
     }
 
 

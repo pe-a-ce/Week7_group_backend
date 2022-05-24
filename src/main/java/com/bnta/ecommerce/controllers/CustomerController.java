@@ -3,6 +3,7 @@ package com.bnta.ecommerce.controllers;
 import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    public CustomerController() {
-    }
+    public CustomerController() {}
 
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
@@ -41,9 +41,17 @@ public class CustomerController {
 
     // Add a new customer
     @PostMapping("/customers")
-    public ResponseEntity<Customer> postCustomer(@RequestBody Customer customer){
-        Customer customer1 = customerService.save(customer);
-        return new ResponseEntity<>(customer, HttpStatus.CREATED);
+    public ResponseEntity postCustomer(@RequestBody Customer customer){
+        try {
+            Customer addedCustomer = customerService.save(customer);
+            return new ResponseEntity<>(addedCustomer, HttpStatus.CREATED);
+        }
+        catch (DataIntegrityViolationException dive) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(dive.getCause().getCause().getMessage());
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
     }
 
 }
