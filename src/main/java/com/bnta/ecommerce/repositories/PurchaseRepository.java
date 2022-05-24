@@ -2,11 +2,14 @@ package com.bnta.ecommerce.repositories;
 
 import com.bnta.ecommerce.models.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
@@ -37,4 +40,39 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                                      String toDate,
                                      String manufacturer);
 
+
+    @Query(
+            value = "SELECT *" +
+                    " FROM " +
+                    " purchase " +
+                    " WHERE " +
+                    " customer_id = ?1 AND product_id = ?2 " +
+                    "AND purchased = FALSE",
+            nativeQuery = true
+    )
+    Optional<Purchase> findByProductCustomerId(Long customerId, Long productId);
+
+
+    @Query(
+            value = "insert into " +
+                    " purchase " +
+                    " (purchase_quantity, " +
+                    " purchased, " +
+                    " purchased_date, " +
+                    " customer_id, " +
+                    " product_id) " +
+                    " values (1, FALSE, null, ?1, ?2) ",
+            nativeQuery = true
+    )
+    void makePurchase(Long customerId, Long productId);
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE purchase " +
+                    " SET purchase_quantity = purchase_quantity + 1 " +
+                    " WHERE id = ?1",
+            nativeQuery = true)
+    int updatePurchaseQuantity(Long purchaseId);
 }
+

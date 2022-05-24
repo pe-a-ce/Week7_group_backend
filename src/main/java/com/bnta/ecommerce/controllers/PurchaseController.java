@@ -6,12 +6,10 @@ import com.bnta.ecommerce.services.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -52,5 +50,38 @@ public class PurchaseController {
         }
 
     }
+
+//    Put - updating to bought
+//    Put - updating purchase quantity
+
+    @PostMapping("/purchases") //Add new purchase
+    public ResponseEntity makePurchase(
+            @RequestBody(required = true) Map<String, String> payload){
+
+        Long customerId;
+        Long productId;
+
+        try {
+            customerId = Long.parseLong(payload.get("customerId"));
+            productId = Long.parseLong(payload.get("productId"));
+        }
+        catch (NumberFormatException nfe) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IDs must be numbers");
+        }
+
+        if (customerId <= 0 || productId <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IDs must be greater than 0.");
+        }
+
+        Optional<Purchase> purchase = purchaseService.findByProductCustomerId(customerId, productId);
+
+        if (purchase.isPresent()) {
+            purchaseService.updatePurchaseQuantity(purchase.get().getId());
+            return null;
+        }
+        purchaseService.makePurchase(customerId, productId);
+        return null;
+    }
+
 
 }
