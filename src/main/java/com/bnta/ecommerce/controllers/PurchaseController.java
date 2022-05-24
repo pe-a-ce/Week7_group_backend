@@ -55,24 +55,19 @@ public class PurchaseController {
 //    Put - updating purchase quantity
 
     @PostMapping("/purchase") //Add new purchase
-    public ResponseEntity<Purchase> makePurchase(@RequestBody (required = true)Map<String, String> payload){
+    public ResponseEntity<Purchase> makePurchase(
+            @RequestBody(required = true) Map<String, String> payload){
         String customerId = payload.get("customerId");
         String productId = payload.get("productId");
 
-        List<Purchase> purchaseList = purchaseService.findByProductCustomerId(Long.parseLong(customerId), Long.parseLong(productId));
+        Optional<Purchase> purchase = purchaseService.findByProductCustomerId(Long.parseLong(customerId), Long.parseLong(productId));
 
-        if (purchaseList.isEmpty()) {
-            purchaseService.makePurchase(Long.parseLong(customerId), Long.parseLong(productId));
+        if (purchase.isPresent()) {
+            purchaseService.updatePurchaseQuantity(purchase.get().getId());
             return null;
-        } for(Purchase purchase: purchaseList){
-            if (!purchase.getPurchased()){
-                purchaseService.updatePurchase(Long.parseLong(customerId), Long.parseLong(productId));
-                break;
-//                System.out.println("purchased");
-            }
         }
 
-        System.out.println("anything");
+        purchaseService.makePurchase(Long.parseLong(customerId), Long.parseLong(productId));
         return null;
     }
 

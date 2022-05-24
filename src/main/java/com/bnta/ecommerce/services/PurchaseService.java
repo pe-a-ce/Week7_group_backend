@@ -69,7 +69,7 @@ public class PurchaseService {
                 "%"+manufacturer.trim()+"%");
     }
 
-    public List<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
+    public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
         return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
     }
 
@@ -77,8 +77,8 @@ public class PurchaseService {
         purchaseRepository.makePurchase(CustomerId, ProductId);
     }
 
-    public void updatePurchase(Long CustomerId, Long ProductId){
-        purchaseRepository.updatePurchase(CustomerId, ProductId);
+    public void updatePurchaseQuantity(Long purchaseId){
+        purchaseRepository.updatePurchaseQuantity(purchaseId);
     }
 }
 
