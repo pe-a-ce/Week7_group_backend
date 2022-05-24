@@ -54,20 +54,32 @@ public class PurchaseController {
 //    Put - updating to bought
 //    Put - updating purchase quantity
 
-    @PostMapping("/purchase") //Add new purchase
-    public ResponseEntity<Purchase> makePurchase(
+    @PostMapping("/purchases") //Add new purchase
+    public ResponseEntity makePurchase(
             @RequestBody(required = true) Map<String, String> payload){
-        String customerId = payload.get("customerId");
-        String productId = payload.get("productId");
 
-        Optional<Purchase> purchase = purchaseService.findByProductCustomerId(Long.parseLong(customerId), Long.parseLong(productId));
+        Long customerId;
+        Long productId;
+
+        try {
+            customerId = Long.parseLong(payload.get("customerId"));
+            productId = Long.parseLong(payload.get("productId"));
+        }
+        catch (NumberFormatException nfe) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IDs must be numbers");
+        }
+
+        if (customerId <= 0 || productId <= 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IDs must be greater than 0.");
+        }
+
+        Optional<Purchase> purchase = purchaseService.findByProductCustomerId(customerId, productId);
 
         if (purchase.isPresent()) {
             purchaseService.updatePurchaseQuantity(purchase.get().getId());
             return null;
         }
-
-        purchaseService.makePurchase(Long.parseLong(customerId), Long.parseLong(productId));
+        purchaseService.makePurchase(customerId, productId);
         return null;
     }
 
