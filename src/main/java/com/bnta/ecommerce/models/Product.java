@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Product {
@@ -14,12 +13,13 @@ public class Product {
     private Long id;
     @Column(name = "price")
     private Double price;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "category")
-    private String category;
+    @Column(name = "model")
+    private String model;
+    @Column(name = "manufacturer")
+    private String manufacturer;
 
-    @JsonIgnoreProperties({"product"})
+    @JsonIgnoreProperties({"product"}
+    )
     @OneToOne(mappedBy = "product")
     private Stock stock;
 
@@ -28,11 +28,11 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, Double price, String name, String category, Stock stock, List<Purchase> purchases) {
+    public Product(Long id, Double price, String model, String category, Stock stock, List<Purchase> purchases) {
         this.id = id;
         this.price = price;
-        this.name = name;
-        this.category = category;
+        this.model = model;
+        this.manufacturer = category;
         this.stock = stock;
         this.purchases = purchases;
     }
@@ -53,20 +53,20 @@ public class Product {
         this.price = price;
     }
 
-    public String getName() {
-        return name;
+    public String getModel() {
+        return model;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public String getCategory() {
-        return category;
+        return manufacturer;
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.manufacturer = category;
     }
 
     public Stock getStock() {
