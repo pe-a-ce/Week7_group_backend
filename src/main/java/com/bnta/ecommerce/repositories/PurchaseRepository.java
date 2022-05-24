@@ -37,4 +37,14 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                                      String toDate,
                                      String manufacturer);
 
+
+    @Query( value = "SELECT *" + " FROM " + " purchase " + " WHERE " + " customer_id = ?1 AND product_id = ?2",
+            nativeQuery = true
+    )  List<Purchase> findByProductCustomerId(Long customerId, Long productId);
+
+
+    @Query( value = "insert into " + " purchase " + " (purchase_quantity, " + " purchased, " + " purchased_date, " +  " customer_id, " + " product_id) " + " values (1, FALSE, null, ?1, ?2) ",
+            nativeQuery = true
+    )
+    void makePurchase(Long customerId, Long productId);
 }

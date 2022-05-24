@@ -30,4 +30,8 @@ public class CustomerService {
         return customerRepository.findById(id);
 
     }
+
+    public Customer save(Customer customer) {
+        return customerRepository.save(customer);
+    }
 }

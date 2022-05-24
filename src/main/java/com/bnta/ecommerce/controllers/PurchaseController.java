@@ -6,12 +6,10 @@ import com.bnta.ecommerce.services.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -52,5 +50,24 @@ public class PurchaseController {
         }
 
     }
+
+//    Put - updating to bought
+//    Put - updating purchase quantity
+
+    @PostMapping("/purchase") //Add new purchase
+    public ResponseEntity<Purchase> makePurchase(@RequestBody (required = true)Map<String, String> payload){
+        String customerId = payload.get("customerId");
+        String productId = payload.get("productId");
+
+        List<Purchase> purchaseList = purchaseService.findByProductCustomerId(Long.parseLong(customerId), Long.parseLong(productId));
+
+        if (purchaseList.isEmpty()) {
+            purchaseService.makePurchase(Long.parseLong(customerId), Long.parseLong(productId));
+            return null;
+        }
+        System.out.println("anything");
+        return null;
+    }
+
 
 }

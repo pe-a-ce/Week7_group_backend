@@ -68,4 +68,13 @@ public class PurchaseService {
                 toDate,
                 "%"+manufacturer.trim()+"%");
     }
+
+    public List<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
+        return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
+    }
+
+    public void makePurchase(Long CustomerId, Long ProductId){
+        purchaseRepository.makePurchase(CustomerId, ProductId);
+    }
 }
+
