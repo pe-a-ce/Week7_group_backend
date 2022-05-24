@@ -28,16 +28,13 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id,
-                   Double price,
-                   String name,
-                   String category,
-                   Stock stock) {
+    public Product(Long id, Double price, String name, String category, Stock stock, List<Purchase> purchases) {
         this.id = id;
         this.price = price;
         this.name = name;
         this.category = category;
         this.stock = stock;
+        this.purchases = purchases;
     }
 
     public Long getId() {
@@ -78,5 +75,13 @@ public class Product {
 
     public void setStock(Stock stock) {
         this.stock = stock;
+    }
+
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 }
