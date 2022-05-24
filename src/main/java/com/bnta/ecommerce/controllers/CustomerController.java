@@ -1,8 +1,6 @@
 package com.bnta.ecommerce.controllers;
 
 import com.bnta.ecommerce.models.Customer;
-import com.bnta.ecommerce.models.Stock;
-import com.bnta.ecommerce.repositories.CustomerRepository;
 import com.bnta.ecommerce.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +15,6 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
-
-    @Autowired
-    private CustomerRepository customerRepository;
 
     public CustomerController() {
     }
