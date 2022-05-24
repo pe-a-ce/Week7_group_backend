@@ -47,4 +47,10 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
             nativeQuery = true
     )
     void makePurchase(Long customerId, Long productId);
+
+
+    @Query( value = "UPDATE purchase " + " SET purchase_quantity = purchase_quantity + 1 " + " WHERE customer_id = ?1 AND product_id = ?2)",
+            nativeQuery = true)
+    int updatePurchase(Long customerId, Long productId);
 }
+

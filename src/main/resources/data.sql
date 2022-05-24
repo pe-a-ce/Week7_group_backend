@@ -2113,7 +2113,7 @@ insert into stock (product_id, quantity) values (998, 4);
 insert into stock (product_id, quantity) values (999, 3);
 insert into stock (product_id, quantity) values (1000, 6);
 
-insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, TRUE, '2022-05-01', 1, 1);
+insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, FALSE, '2022-05-01', 1, 1);
 insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (2, TRUE, '2022-01-25', 2, 3);
 insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, TRUE, '2021-02-14', 3, 6);
 insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, TRUE, '2021-04-16', 4, 9);

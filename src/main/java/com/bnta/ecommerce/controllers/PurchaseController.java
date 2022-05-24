@@ -64,7 +64,14 @@ public class PurchaseController {
         if (purchaseList.isEmpty()) {
             purchaseService.makePurchase(Long.parseLong(customerId), Long.parseLong(productId));
             return null;
+        } for(Purchase purchase: purchaseList){
+            if (!purchase.getPurchased()){
+                purchaseService.updatePurchase(Long.parseLong(customerId), Long.parseLong(productId));
+                break;
+//                System.out.println("purchased");
+            }
         }
+
         System.out.println("anything");
         return null;
     }

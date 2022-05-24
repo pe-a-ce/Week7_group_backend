@@ -76,5 +76,10 @@ public class PurchaseService {
     public void makePurchase(Long CustomerId, Long ProductId){
         purchaseRepository.makePurchase(CustomerId, ProductId);
     }
+
+    public void updatePurchase(Long CustomerId, Long ProductId){
+        purchaseRepository.updatePurchase(CustomerId, ProductId);
+    }
 }
+
 
