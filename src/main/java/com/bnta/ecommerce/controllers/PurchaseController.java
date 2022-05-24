@@ -35,8 +35,8 @@ public class PurchaseController {
 
     @GetMapping("/purchases")
     public ResponseEntity searchPurchases(
-            @RequestParam(required = false, defaultValue = "0") Integer minQuantity,
-            @RequestParam(required = false, defaultValue = "2000") Integer maxQuantity,
+            @RequestParam(required = false, defaultValue = "0") String minQuantity,
+            @RequestParam(required = false, defaultValue = "2000") String maxQuantity,
             @RequestParam(required = false, defaultValue = "1000-01-01") String fromDate,
             @RequestParam(required = false, defaultValue = "4000-01-01") String toDate,
             @RequestParam(required = false, defaultValue = "") String category
@@ -51,8 +51,6 @@ public class PurchaseController {
 
     }
 
-//    Put - updating to bought
-//    Put - updating purchase quantity
 
     @PostMapping("/purchases") //Add new purchase
     public ResponseEntity makePurchase(
@@ -77,10 +75,10 @@ public class PurchaseController {
 
         if (purchase.isPresent()) {
             purchaseService.updatePurchaseQuantity(purchase.get().getId());
-            return null;
+            return ResponseEntity.status(HttpStatus.OK).body("Purchase quantity updated.");
         }
         purchaseService.makePurchase(customerId, productId);
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body("Purchase created");
     }
 
 

@@ -35,10 +35,10 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
             nativeQuery = true
     )
     List<Purchase> searchAll(Integer minQuantity,
-                                     Integer maxQuantity,
-                                     String fromDate,
-                                     String toDate,
-                                     String manufacturer);
+                             Integer maxQuantity,
+                             String fromDate,
+                             String toDate,
+                             String manufacturer);
 
 
     @Query(
@@ -65,6 +65,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
             nativeQuery = true
     )
     void makePurchase(Long customerId, Long productId);
+
 
     @Transactional
     @Modifying

@@ -29,20 +29,28 @@ public class PurchaseService {
     }
 
     public List<Purchase> searchAll(
-                                 Integer minQuantity,
-                                 Integer maxQuantity,
+                                 String minQuantity,
+                                 String maxQuantity,
                                  String fromDate,
                                  String toDate,
                                  String manufacturer) {
 
-        System.out.println("minQuantity: " + minQuantity);
-        System.out.println("maxQuantity: " + maxQuantity);
-        System.out.println("fromDate: " + fromDate);
-        System.out.println("toDate: " + toDate);
-        System.out.println("category: " + manufacturer);
+        Integer minQuantityInt;
+        Integer maxQuantityInt;
 
+        try {
+            minQuantityInt = Integer.parseInt(minQuantity);
+            maxQuantityInt = Integer.parseInt(maxQuantity);
+        }
+        catch (NumberFormatException efe) {
+            throw new RuntimeException("Quantity must be provided as a number.");
+        }
 
-        if (minQuantity >= maxQuantity) {
+        if (minQuantityInt < 1 || maxQuantityInt < 1) {
+            throw new RuntimeException("Quantity must be at least 1.");
+        }
+
+        if (minQuantityInt >= maxQuantityInt) {
             throw new RuntimeException("Min Quantity must be less than Max Quantity.");
         }
 
@@ -62,11 +70,12 @@ public class PurchaseService {
         }
 
         return purchaseRepository.searchAll(
-                minQuantity,
-                maxQuantity,
-                fromDate,
-                toDate,
-                "%"+manufacturer.trim()+"%");
+                                            minQuantityInt,
+                                            maxQuantityInt,
+                                            fromDate,
+                                            toDate,
+                                            "%"+manufacturer.trim()+"%"
+        );
     }
 
     public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
