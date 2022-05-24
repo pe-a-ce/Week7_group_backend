@@ -23,10 +23,9 @@ public class PurchaseService {
         this.purchaseRepository = purchaseRepository;
     }
 
-    public List getAll() { return purchaseRepository.findAll();}
 
     public Optional<Purchase> findByPurchaseId(Long id) {
-    return purchaseRepository.findById(id);
+        return purchaseRepository.findById(id);
     }
 
     public List<Purchase> searchAll(
@@ -61,7 +60,6 @@ public class PurchaseService {
         if (!fromDateDate.isBefore(toDateDate)) {
             throw new RuntimeException("fromDate needs to be before toDate.");
         }
-
 
         return purchaseRepository.searchAll(
                 minQuantity,

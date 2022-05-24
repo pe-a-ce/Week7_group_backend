@@ -20,16 +20,11 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
-    public PurchaseController() {
-    }
+    public PurchaseController() {}
 
     public PurchaseController(PurchaseService purchaseService) {
         this.purchaseService = purchaseService;
     }
-
-//    @GetMapping("/purchase")  // Get All purchases
-//    public ResponseEntity<List<Purchase>> getAll(){
-//        return ResponseEntity.ok().body(purchaseService.getAll());}
 
     @GetMapping("/purchase/{id}") // Get Purchase by ID
     public ResponseEntity<Purchase> findByPurchaseId(@PathVariable Long id){
