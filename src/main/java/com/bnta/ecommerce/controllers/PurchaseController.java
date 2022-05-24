@@ -4,6 +4,7 @@ import com.bnta.ecommerce.models.Purchase;
 import com.bnta.ecommerce.models.Stock;
 import com.bnta.ecommerce.services.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,19 +41,21 @@ public class PurchaseController {
     }
 
     @GetMapping("/purchases")
-    public ResponseEntity<List<Purchase>> searchPurchases(
+    public ResponseEntity searchPurchases(
             @RequestParam(required = false, defaultValue = "0") Integer minQuantity,
             @RequestParam(required = false, defaultValue = "2000") Integer maxQuantity,
             @RequestParam(required = false, defaultValue = "1000-01-01") String fromDate,
             @RequestParam(required = false, defaultValue = "4000-01-01") String toDate,
-            @RequestParam(required = false) Optional<String> category
+            @RequestParam(required = false, defaultValue = "") String category
     ) {
+        try {
+            List<Purchase> purchases = purchaseService.searchAll(minQuantity, maxQuantity, fromDate, toDate, category);
+            return new ResponseEntity<>(purchases, HttpStatus.OK);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
 
-        return ResponseEntity
-                .ok()
-                .body(
-                        purchaseService.searchAll(minQuantity, maxQuantity, fromDate, toDate, null)
-                );
     }
 
     // Get Purchase by customer id
