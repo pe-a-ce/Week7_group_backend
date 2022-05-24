@@ -27,9 +27,9 @@ public class PurchaseController {
         this.purchaseService = purchaseService;
     }
 
-    @GetMapping("/purchase")  // Get All purchases
-    public ResponseEntity<List<Purchase>> getAll(){
-        return ResponseEntity.ok().body(purchaseService.getAll());}
+//    @GetMapping("/purchase")  // Get All purchases
+//    public ResponseEntity<List<Purchase>> getAll(){
+//        return ResponseEntity.ok().body(purchaseService.getAll());}
 
     @GetMapping("/purchase/{id}") // Get Purchase by ID
     public ResponseEntity<Purchase> findByPurchaseId(@PathVariable Long id){
@@ -58,8 +58,4 @@ public class PurchaseController {
 
     }
 
-    // Get Purchase by customer id
-
-
-    // Get purchase by category name
 }
