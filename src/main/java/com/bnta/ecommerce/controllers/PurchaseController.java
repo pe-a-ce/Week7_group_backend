@@ -54,7 +54,7 @@ public class PurchaseController {
         return ResponseEntity
                 .ok()
                 .body(
-                        purchaseService.search(1L, minQuantity, maxQuantity, fromDate, toDate, null)
+                        purchaseService.searchAll(1L, minQuantity, maxQuantity, fromDate, toDate, null)
                 );
     }
 

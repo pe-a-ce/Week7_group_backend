@@ -14,8 +14,7 @@ public class PurchaseService {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
-    public PurchaseService() {
-    }
+    public PurchaseService() {}
 
     public PurchaseService(PurchaseRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
@@ -27,7 +26,7 @@ public class PurchaseService {
     return purchaseRepository.findById(id);
     }
 
-    public List<Purchase> search(Long customerId,
+    public List<Purchase> searchAll(Long customerId,
                                  Integer minQuantity,
                                  Integer maxQuantity,
                                  String fromDate,
