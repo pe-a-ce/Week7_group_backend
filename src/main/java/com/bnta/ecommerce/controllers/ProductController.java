@@ -38,7 +38,7 @@ public class ProductController {
             @RequestParam(required = false, name = "Maximum Price", defaultValue = "100") Double maxPrice
     ) {
         try{
-            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired, category, minPrice, maxPrice));
+            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, category, minPrice, maxPrice));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

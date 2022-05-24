@@ -2,7 +2,6 @@ package com.bnta.ecommerce.services;
 
 import com.bnta.ecommerce.models.Product;
 import com.bnta.ecommerce.repositories.ProductRepository;
-import com.bnta.ecommerce.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +25,13 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> returnRelevantProducts(Boolean inStockRequired, String category, Double minPrice, Double maxPrice) throws Exception{
+    public List<Product> returnRelevantProducts(int stockRequired, String category, Double minPrice, Double maxPrice) throws Exception{
 
         if (minPrice > maxPrice){
             throw new Exception("Minimum price must be lower than maximum price!");
         }
-        int stock = inStockRequired ? 1 : 0;
 
-        List<Product> inStock = productRepository.findInStockProducts(stock);
+        List<Product> inStock = productRepository.findProductsMinStock(stockRequired);
         List<Product> priceRange = productRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
         List<Product> result = inStock.stream().filter(priceRange::contains).collect(Collectors.toList());
         if (category != null){
