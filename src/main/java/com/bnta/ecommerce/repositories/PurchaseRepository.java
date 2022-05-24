@@ -28,7 +28,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     "purchase.product_id = product.id " +
                     "WHERE purchase_quantity >= ?1 AND purchase_quantity < ?2 " +
                     "AND purchased_date >= CAST(?3 AS DATE) AND purchased_date <= CAST(?4 AS DATE) " +
-                    "AND manufacturer LIKE ?5",
+                    "AND LOWER(manufacturer) LIKE LOWER(?5)",
             nativeQuery = true
     )
     List<Purchase> searchAll(Integer minQuantity,
