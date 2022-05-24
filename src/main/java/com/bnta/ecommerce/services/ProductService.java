@@ -69,15 +69,6 @@ public class ProductService {
             throw new Exception("Product ID already in use!");
         }
         Product result = productRepository.save(product);
-
-//        Product result;
-//        if (product.getId() == null) {
-//            result = productRepository.save(product);
-//        } else if (productRepository.findById(product.getId()).isEmpty()) {
-//             result = productRepository.save(product);
-//        } else {
-//             throw
-//         }
         result.setStock(stockService.addToStock(result.getId(), result));
         return result;
     }

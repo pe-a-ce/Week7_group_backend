@@ -32,6 +32,8 @@ public class StockService {
    }
 
    public Stock addToStock(Long id, Product product){
-       return stockRepository.save(new Stock(id, 0, product));
+       Stock stock = new Stock(0, product);
+       stock.setId(id);
+       return stockRepository.save(stock);
    }
 }

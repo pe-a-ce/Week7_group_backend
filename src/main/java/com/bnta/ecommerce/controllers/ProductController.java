@@ -59,6 +59,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
+            product.setId(null);
             return ResponseEntity.ok().body(productService.createProduct(product));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
