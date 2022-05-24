@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -13,6 +14,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private StockService stockService;
 
     public ProductService() {
     }
@@ -58,6 +61,24 @@ public class ProductService {
         if(result.isEmpty()){
             throw new Exception("No cars found!");
         }
+        return result;
+    }
+
+    public Product createProduct(Product product) throws Exception {
+        if (product.getId() != null && productRepository.findById(product.getId()).isPresent()){
+            throw new Exception("Product ID already in use!");
+        }
+        Product result = productRepository.save(product);
+
+//        Product result;
+//        if (product.getId() == null) {
+//            result = productRepository.save(product);
+//        } else if (productRepository.findById(product.getId()).isEmpty()) {
+//             result = productRepository.save(product);
+//        } else {
+//             throw
+//         }
+        result.setStock(stockService.addToStock(result.getId(), result));
         return result;
     }
 }

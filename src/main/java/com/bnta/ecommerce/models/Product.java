@@ -1,5 +1,6 @@
 package com.bnta.ecommerce.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -21,7 +22,7 @@ public class Product {
     @JsonIgnoreProperties({"product"})
     @OneToOne(mappedBy = "product")
     private Stock stock;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<Purchase> purchases;
 

@@ -1,5 +1,6 @@
 package com.bnta.ecommerce.services;
 
+import com.bnta.ecommerce.models.Product;
 import com.bnta.ecommerce.models.Stock;
 import com.bnta.ecommerce.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,9 @@ public class StockService {
 
    public Optional<Stock> findById(Long id){
         return stockRepository.findById(id);
+   }
+
+   public Stock addToStock(Long id, Product product){
+       return stockRepository.save(new Stock(id, 0, product));
    }
 }
