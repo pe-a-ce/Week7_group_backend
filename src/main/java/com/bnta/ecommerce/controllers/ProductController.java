@@ -46,11 +46,11 @@ public class ProductController {
 
     @GetMapping("/fieldSearch")
     public ResponseEntity<List<Product>> getByManufacturerAndModel(
-            @RequestParam(required = false, name = "Manufacturer", defaultValue = "%") String manufactuer,
+            @RequestParam(required = false, name = "Manufacturer", defaultValue = "%") String manufacturer,
             @RequestParam(required = false, name = "Model", defaultValue = "%") String model
     ) {
         try{
-            return ResponseEntity.ok().body(productService.searchByManufacturerAndModel(manufactuer, model));
+            return ResponseEntity.ok().body(productService.searchByManufacturerAndModel(manufacturer, model));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
