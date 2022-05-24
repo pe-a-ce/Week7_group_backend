@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             nativeQuery = true)
     List<Product> findProductsMinStock(Integer quantity);
 
-    List<Product> findByCategoryIgnoreCase(String category);
+    List<Product> findByManufacturerIgnoreCase(String manufacturer);
 
     List<Product> findByPriceGreaterThanEqualAndPriceLessThanEqual(Double minPrice, Double maxPrice);
 }

@@ -33,12 +33,12 @@ public class ProductController {
     @GetMapping("/search") // Get Product, by various optional parameters
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
-            @RequestParam(required = false, name = "Category") String category,
+            @RequestParam(required = false, name = "Manufacturer") String manufacturer,
             @RequestParam(required = false, name = "Minimum Price", defaultValue = "0") Double minPrice,
             @RequestParam(required = false, name = "Maximum Price", defaultValue = "100") Double maxPrice
     ) {
         try{
-            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, category, minPrice, maxPrice));
+            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, manufacturer, minPrice, maxPrice));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
