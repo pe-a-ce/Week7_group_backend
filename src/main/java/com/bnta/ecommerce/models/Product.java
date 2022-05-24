@@ -18,8 +18,7 @@ public class Product {
     @Column(name = "manufacturer")
     private String manufacturer;
 
-    @JsonIgnoreProperties({"product"}
-    )
+    @JsonIgnoreProperties({"product"})
     @OneToOne(mappedBy = "product")
     private Stock stock;
 

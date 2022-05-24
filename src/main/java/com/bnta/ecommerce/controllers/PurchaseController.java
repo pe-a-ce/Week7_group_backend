@@ -41,7 +41,6 @@ public class PurchaseController {
 
     @GetMapping("/purchases")
     public ResponseEntity<List<Purchase>> searchPurchases(
-            @RequestParam(required = false) Optional<Long> customerId,
             @RequestParam(required = false, defaultValue = "0") Integer minQuantity,
             @RequestParam(required = false, defaultValue = "2000") Integer maxQuantity,
             @RequestParam(required = false, defaultValue = "1000-01-01") String fromDate,
@@ -49,12 +48,10 @@ public class PurchaseController {
             @RequestParam(required = false) Optional<String> category
     ) {
 
-        System.out.println(customerId.isPresent());
-
         return ResponseEntity
                 .ok()
                 .body(
-                        purchaseService.searchAll(1L, minQuantity, maxQuantity, fromDate, toDate, null)
+                        purchaseService.searchAll(minQuantity, maxQuantity, fromDate, toDate, null)
                 );
     }
 
