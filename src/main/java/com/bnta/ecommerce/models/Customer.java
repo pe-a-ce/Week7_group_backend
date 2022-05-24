@@ -11,11 +11,11 @@ public class Customer {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "username")
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column(name = "email")
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "wallet")
     private Double wallet;

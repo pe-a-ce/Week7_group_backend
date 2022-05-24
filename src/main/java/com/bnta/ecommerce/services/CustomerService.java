@@ -14,13 +14,11 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public CustomerService() {
-    }
+    public CustomerService() {}
 
     public CustomerService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
-
 
     public List<Customer> getAll(){
         return customerRepository.findAll();
@@ -28,7 +26,6 @@ public class CustomerService {
 
     public Optional<Customer> findById(Long id) {
         return customerRepository.findById(id);
-
     }
 
     public Customer save(Customer customer) {

@@ -28,11 +28,14 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customers") // Get All Customers
+    // Get all customers
+    @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomers(){
         return ResponseEntity.ok().body(customerService.getAll());
-}
-    @GetMapping("/customers/{id}") // Get All Customers by id
+    }
+
+    // Get all customers by ID
+    @GetMapping("/customers/{id}")
     public ResponseEntity<Customer> findByID(@PathVariable Long id){
         Optional<Customer> customerOptional = customerService.findById(id);
         if (customerOptional.isPresent()){
@@ -41,9 +44,10 @@ public class CustomerController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/customers") // Add new customer
+    // Add a new customer
+    @PostMapping("/customers")
     public ResponseEntity<Customer> postCustomer(@RequestBody Customer customer){
-       Customer customer1 = customerService.save(customer);
+        Customer customer1 = customerService.save(customer);
         return new ResponseEntity<>(customer, HttpStatus.CREATED);
     }
 
