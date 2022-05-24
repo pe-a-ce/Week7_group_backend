@@ -38,7 +38,19 @@ public class ProductService {
         List<Product> result = inStock.stream().filter(priceRange::contains).collect(Collectors.toList());
         if (category != null){
             List<Product> inCategory = productRepository.findByCategoryIgnoreCase(category);
+            if (inCategory.isEmpty()){
+                throw new Exception("No cars by this manufacturer stocked!");
+            }
             result = result.stream().filter(inCategory::contains).collect(Collectors.toList());
+        }
+        if (inStock.isEmpty()){
+            throw new Exception("No cars in stock!");
+        }
+        if (priceRange.isEmpty()) {
+            throw new Exception("No cars in this price range!");
+        }
+        if (result.isEmpty()){
+            throw new Exception("No cars found to meet this criteria!");
         }
         return result;
     }
