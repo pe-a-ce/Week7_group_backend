@@ -61,11 +61,11 @@ public class Product {
         this.model = model;
     }
 
-    public String getCategory() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setCategory(String category) {
+    public void setManufacturer(String category) {
         this.manufacturer = category;
     }
 
