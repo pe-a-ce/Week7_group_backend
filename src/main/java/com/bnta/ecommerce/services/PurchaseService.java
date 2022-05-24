@@ -5,6 +5,9 @@ import com.bnta.ecommerce.repositories.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,21 +29,45 @@ public class PurchaseService {
     return purchaseRepository.findById(id);
     }
 
-    public List<Purchase> searchAll(Long customerId,
+    public List<Purchase> searchAll(
                                  Integer minQuantity,
                                  Integer maxQuantity,
                                  String fromDate,
                                  String toDate,
-                                 String category) {
+                                 String manufacturer) {
 
-        System.out.println("customerId: " + customerId);
         System.out.println("minQuantity: " + minQuantity);
         System.out.println("maxQuantity: " + maxQuantity);
         System.out.println("fromDate: " + fromDate);
         System.out.println("toDate: " + toDate);
-        System.out.println("category: " + category);
+        System.out.println("category: " + manufacturer);
 
-        return null;
-//        return purchaseRepository.searchAll();
+
+        if (minQuantity >= maxQuantity) {
+            throw new RuntimeException("Min Quantity must be less than Max Quantity.");
+        }
+
+        LocalDate toDateDate;
+        LocalDate fromDateDate;
+
+        try {
+            toDateDate = LocalDate.parse(toDate);
+            fromDateDate = LocalDate.parse(fromDate);
+        }
+        catch (DateTimeParseException dtpe) {
+            throw new RuntimeException("Dates needs to be given in the following format: YYYY-MM-DD");
+        }
+
+        if (!fromDateDate.isBefore(toDateDate)) {
+            throw new RuntimeException("fromDate needs to be before toDate.");
+        }
+
+
+        return purchaseRepository.searchAll(
+                minQuantity,
+                maxQuantity,
+                fromDate,
+                toDate,
+                "%"+manufacturer+"%");
     }
 }
