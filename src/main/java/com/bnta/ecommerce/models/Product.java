@@ -18,8 +18,7 @@ public class Product {
     @Column(name = "manufacturer")
     private String manufacturer;
 
-    @JsonIgnoreProperties({"product"}
-    )
+    @JsonIgnoreProperties({"product"})
     @OneToOne(mappedBy = "product")
     private Stock stock;
 
@@ -28,11 +27,12 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, Double price, String model, String category, Stock stock, List<Purchase> purchases) {
+
+    public Product(Long id, Double price, String model, String manufacturer, Stock stock, List<Purchase> purchases) {
         this.id = id;
         this.price = price;
         this.model = model;
-        this.manufacturer = category;
+        this.manufacturer = manufacturer;
         this.stock = stock;
         this.purchases = purchases;
     }
@@ -65,8 +65,8 @@ public class Product {
         return manufacturer;
     }
 
-    public void setManufacturer(String category) {
-        this.manufacturer = category;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public Stock getStock() {

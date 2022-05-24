@@ -52,4 +52,12 @@ public class ProductService {
         }
         return result;
     }
+
+    public List<Product> searchByManufacturerAndModel(String manufacturer, String model) throws Exception {
+        List<Product> result = productRepository.findByManufacturerModel(manufacturer, model);
+        if(result.isEmpty()){
+            throw new Exception("No cars found!");
+        }
+        return result;
+    }
 }
