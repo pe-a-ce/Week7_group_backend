@@ -60,5 +60,13 @@ public class StockController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
+
+    @PutMapping("/stock")
+    public ResponseEntity<Stock> changeQuantity(
+            @RequestParam(name = "Stock ID") Long id,
+            @RequestParam(name = "New Quantity") int quantity){
+        Stock updatedStock = stockService.changeQuantity(id, quantity);
+        return ResponseEntity.ok().body(updatedStock);
+    }
 }
 
