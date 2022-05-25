@@ -52,6 +52,12 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     )
     Optional<Purchase> findByProductCustomerId(Long customerId, Long productId);
 
+    @Query(
+            value = "SELECT * FROM purchase WHERE customer_id = ?1 AND purchased = FALSE",
+            nativeQuery = true
+    )
+    List<Purchase> getBasketByCustomerId(Long customerId);
+
     @Transactional
     @Modifying
     @Query(
@@ -65,7 +71,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     " values (1, FALSE, null, ?1, ?2) ",
             nativeQuery = true
     )
-    void makePurchase(Long customerId, Long productId);
+    void addToBasket(Long customerId, Long productId);
 
 
     @Transactional
@@ -75,6 +81,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     " SET purchase_quantity = purchase_quantity + 1 " +
                     " WHERE id = ?1",
             nativeQuery = true)
-    int updatePurchaseQuantity(Long purchaseId);
+    int updateBasketQuantity(Long purchaseId);
 }
 

@@ -58,7 +58,7 @@ public class PurchaseController {
     }
 
 
-    //Add new purchase
+    // Add new item to basket
     /*
             payload
             {
@@ -85,11 +85,17 @@ public class PurchaseController {
     }
 
 
+    // Purchase all items in basket for a particular customer
     @PutMapping("/purchases")
-    public ResponseEntity makePurchase() {
-
-
-
-        return null;
+    public ResponseEntity makePurchase(
+            @RequestBody(required = true) String customerId
+    ) {
+        try {
+            String status = purchaseService.makePurchase(customerId);
+            return ResponseEntity.status(HttpStatus.OK).body(status);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
     }
 }
