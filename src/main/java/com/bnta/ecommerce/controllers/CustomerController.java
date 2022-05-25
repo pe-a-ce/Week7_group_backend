@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -54,11 +55,66 @@ public class CustomerController {
         }
     }
 
-    @DeleteMapping("/customers/{id}") // Delete a customer by id
-    public void removeCustomer(@PathVariable Long customerId){
-        customerService.deleteCustomer(customerId);
-        // when creating a new customer in postman, will delete all the info just be id BUT
+
+    // Security includes: username, email, password
+
+    /*
+        payload:
+        {
+            "email": "",
+            "username": ""
+        }
+
+     */
+    @PutMapping("/customers/security/username")
+    public ResponseEntity updateCustomerUsername(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerUsername(payload.get("username"), payload.get("email"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
     }
+
+    @PutMapping("/customers/security/email")
+    public ResponseEntity updateCustomerEmail(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerEmail(payload.get("username"), payload.get("email"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
+    /*
+        payload:
+        {
+            "email": "",
+            "password": ""
+        }
+
+     */
+    @PutMapping("/customers/security/password")
+    public ResponseEntity updateCustomerPassword(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerPassword(payload.get("email"), payload.get("password"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+
+    // Information includes: name, address, number
+
+    @PutMapping("/customers/info/name")
+    public ResponseEntity updateCustomerInformation(@RequestBody Map<String, String> payload) {
+        return null;
+    }
+
 }
 
 
