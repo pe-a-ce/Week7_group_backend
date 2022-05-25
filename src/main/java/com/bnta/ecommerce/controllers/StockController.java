@@ -49,9 +49,16 @@ public class StockController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Stock> createStock(@RequestBody Stock stock){
-
+    @PostMapping("/stock")
+    public ResponseEntity<Stock> createStock(
+            @RequestParam(name = "Product ID") Long id,
+            @RequestParam(required = false, name = "Quantity to add", defaultValue = "0") Integer quantity
+    ){
+        try{
+            return ResponseEntity.ok().body(stockService.recreateDeletedStock(id, quantity));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
     }
 }
 
