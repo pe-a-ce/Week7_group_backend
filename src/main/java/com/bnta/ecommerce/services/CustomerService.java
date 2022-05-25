@@ -4,6 +4,7 @@ import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class CustomerService {
     public Optional<Customer> findById(Long id) {
         return customerRepository.findById(id);
     }
+
 
     public Customer save(Customer customer) throws DataIntegrityViolationException {
 
@@ -62,14 +64,31 @@ public class CustomerService {
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 
         if (customerOptional.isEmpty()) {
-            throw new RuntimeException("User not found.");
+            throw new RuntimeException("User not found with this E-Mail");
         }
 
         try {
             return customerRepository.updateCustomerUsername(username, customerOptional.get().getId());
         }
         catch (DataIntegrityViolationException dive) {
-            throw new RuntimeException("This username is already used, please try another.");
+            throw new RuntimeException("This username is already in use, please try another.");
+        }
+    }
+
+
+    public Integer updateCustomerEmail(String username, String email) {
+
+        Optional<Customer> customerOptional = customerRepository.findByUsername(username);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this username.");
+        }
+
+        try {
+            return customerRepository.updateCustomerEmail(email, customerOptional.get().getId());
+        }
+        catch (DataIntegrityViolationException dive) {
+            throw new RuntimeException("This email is alread in use, please try another.");
         }
     }
 }

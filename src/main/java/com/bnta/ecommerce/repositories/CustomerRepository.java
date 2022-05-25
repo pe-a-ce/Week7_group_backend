@@ -18,6 +18,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     )
     Optional<Customer> findByEmail(String email);
 
+    @Query(
+            value = "SELECT * FROM customer WHERE username = ?1",
+            nativeQuery = true
+    )
+    Optional<Customer> findByUsername(String username);
+
     @Transactional
     @Modifying
     @Query(
@@ -25,4 +31,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             nativeQuery = true
     )
     Integer updateCustomerUsername(String username, Long id);
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET email = ?1 WHERE id = ?2",
+            nativeQuery = true
+    )
+    Integer updateCustomerEmail(String email, Long id);
 }

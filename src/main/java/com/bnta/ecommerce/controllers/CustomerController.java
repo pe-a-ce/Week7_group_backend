@@ -77,9 +77,21 @@ public class CustomerController {
         }
     }
 
-//    @PutMapping("/customers/security/email")
-//    public ResponseEntity
+    @PutMapping("/customers/security/email")
+    public ResponseEntity updateCustomerEmail(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerEmail(payload.get("username"), payload.get("email"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
 
+    @PutMapping("/customers/security/password")
+    public ResponseEntity updateCustomerPassword(@RequestBody Map<String, String> payload) {
+        return null;
+    }
 
 
     // Information includes: name, address, number
