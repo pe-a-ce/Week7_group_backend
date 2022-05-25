@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,37 +104,12 @@ public class ProductService {
 
     public List<Product> searchForProducts(String query) throws Exception{
         List<Product> results = Arrays.stream(query.split(" "))
-                .map(q -> productRepository.findEitherManufacturerOrModel(q))
-                .findAny()
-                .orElse(null);
-        if (results == null){
+                .map(q -> productRepository.findEitherManufacturerOrModel("%" + q.trim() + "%"))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        if (results.isEmpty()){
             throw new Exception("No cars found!");
         }
         return results;
     }
-
-//    public List<Product> searchAllProducts(String query) throws Exception{
-////        ArrayList<String> querySplit = new ArrayList<String>(List.of(query.split(" ")));
-//        List<Product> byManufacturer = Arrays.stream(query.split(" "))
-//                .map(q -> productRepository.findByManufacturerContainingIgnoreCase(q))
-//                .findAny().orElse(null);
-//
-//        List<Product> byModel = Arrays.stream(query.split(" "))
-//                .map(q -> productRepository.findByModelContainingIgnoreCase(q)).findAny().orElse(null);
-//
-//        List<Product> result;
-//        if (byManufacturer != null && byModel != null){
-//            result = byModel.stream().filter(b -> byManufacturer.contains(b)).toList();
-//        }
-//        if (byManufacturer == null && byModel == null){
-//            throw new Exception("No cars found");
-//        }
-//        if (byManufacturer != null){
-//            result = byManufacturer;
-//        }
-//        else {
-//            result = byModel;
-//        }
-//        return result;
-//    }
 }
