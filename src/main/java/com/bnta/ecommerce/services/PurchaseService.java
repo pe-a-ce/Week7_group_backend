@@ -1,6 +1,10 @@
 package com.bnta.ecommerce.services;
 
+import com.bnta.ecommerce.models.Customer;
+import com.bnta.ecommerce.models.Product;
 import com.bnta.ecommerce.models.Purchase;
+import com.bnta.ecommerce.repositories.CustomerRepository;
+import com.bnta.ecommerce.repositories.ProductRepository;
 import com.bnta.ecommerce.repositories.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +16,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletionService;
 
 @Service
 public class PurchaseService {
@@ -20,12 +25,21 @@ public class PurchaseService {
     private PurchaseRepository purchaseRepository;
     @Autowired
     private StockService stockService;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public PurchaseService() {}
 
-    public PurchaseService(PurchaseRepository purchaseRepository, StockService stockService) {
+    public PurchaseService(PurchaseRepository purchaseRepository,
+                           StockService stockService,
+                           CustomerRepository customerRepository,
+                           ProductRepository productRepository) {
         this.purchaseRepository = purchaseRepository;
         this.stockService = stockService;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
     }
 
     public Optional<Purchase> findByPurchaseId(Long id) {
@@ -94,7 +108,7 @@ public class PurchaseService {
             purchaseQuantity = Integer.parseInt(purchaseQuantityString);
         }
         catch (NumberFormatException nfe) {
-            throw new RuntimeException("Inputs must be numbers");
+            throw new RuntimeException("Inputs must be numbers.");
         }
 
         if (customerId <= 0 || productId <= 0) {
@@ -106,7 +120,25 @@ public class PurchaseService {
         }
 
         // check customer wallet
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("Customer does not exist.");
+        }
+
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (productOptional.isEmpty()) {
+            throw new RuntimeException("Product does not exist.");
+        }
+
+
+
+        if (customerOptional.get().getWallet() < (productOptional.get().getPrice() * (double)purchaseQuantity)) {
+            return "Not enough credit to purchase item(s)!.";
+        }
+
+//        customerRepository.updateCustomerWallet()
 
         // alterStockQuantity
         try {
@@ -124,6 +156,12 @@ public class PurchaseService {
         }
         purchaseRepository.makePurchase(customerId, productId);
         return "Purchase created";
+    }
+
+
+
+    public String makePurchase() {
+        return null;
     }
 }
 

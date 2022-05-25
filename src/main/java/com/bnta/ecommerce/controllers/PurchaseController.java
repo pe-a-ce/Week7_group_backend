@@ -29,6 +29,7 @@ public class PurchaseController {
         this.stockService = stockService;
     }
 
+
     @GetMapping("/purchase/{id}") // Get Purchase by ID
     public ResponseEntity<Purchase> findByPurchaseId(@PathVariable Long id){
         Optional<Purchase> purchaseIdOptional = purchaseService.findByPurchaseId(id);
@@ -37,6 +38,7 @@ public class PurchaseController {
         }
         return ResponseEntity.notFound().build();
     }
+
 
     @GetMapping("/purchases")
     public ResponseEntity searchPurchases(
@@ -83,4 +85,11 @@ public class PurchaseController {
     }
 
 
+    @PutMapping("/purchases")
+    public ResponseEntity makePurchase() {
+
+
+
+        return null;
+    }
 }

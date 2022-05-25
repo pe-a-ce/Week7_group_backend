@@ -4,7 +4,6 @@ import com.bnta.ecommerce.models.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,4 +47,12 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             nativeQuery = true
     )
     Integer updateCustomerPassword(String password, Long id);
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET wallet = wallet + ?1 WHERE id = ?2",
+            nativeQuery = true
+    )
+    Integer updateCustomerWallet(Double change, Long id);
 }
