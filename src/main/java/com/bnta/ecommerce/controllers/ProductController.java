@@ -33,7 +33,7 @@ public class ProductController {
     @GetMapping("/search") // Get Product, by various optional parameters
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
-            @RequestParam(required = false, name = "Manufacturer", defaultValue = "%") String manufacturer,
+            @RequestParam(required = false, name = "Manufacturer") String manufacturer,
             @RequestParam(required = false, name = "Minimum Price", defaultValue = "0") Double minPrice,
             @RequestParam(required = false, name = "Maximum Price", defaultValue = "100") Double maxPrice
     ) {
@@ -61,15 +61,6 @@ public class ProductController {
         try {
             product.setId(null);
             return ResponseEntity.ok().body(productService.createProduct(product));
-        } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> deleteProduct(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok().body(productService.deleteProduct(id));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

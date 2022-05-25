@@ -2,6 +2,7 @@ package com.bnta.ecommerce.services;
 
 import com.bnta.ecommerce.models.Product;
 import com.bnta.ecommerce.models.Stock;
+import com.bnta.ecommerce.repositories.ProductRepository;
 import com.bnta.ecommerce.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ public class StockService {
     public static Object findAll;
     @Autowired
     private StockRepository stockRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public StockService() {
     }
@@ -36,4 +39,28 @@ public class StockService {
        stock.setId(id);
        return stockRepository.save(stock);
    }
+
+    public Boolean deleteStock(Long id) throws Exception{
+        Optional<Stock> stock = stockRepository.findById(id);
+        if (stock.isPresent()){
+            stockRepository.deleteById(id);
+            return true;
+        } else {
+            throw new Exception("Product not found");
+        }
+    }
+
+    public Stock recreateDeletedStock(Long id, int quantity) throws Exception{
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()){
+            throw new Exception("No such product in database");
+        }
+        if (product.get().getStock() != null){
+            throw new Exception("Stock already assigned to product");
+        }
+        if (stockRepository.findById(id).isPresent()){
+            throw new Exception("Stock already exists");
+        }
+        return stockRepository.save(new Stock(quantity, product.get()));
+    }
 }
