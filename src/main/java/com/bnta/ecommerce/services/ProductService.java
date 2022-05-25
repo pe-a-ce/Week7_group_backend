@@ -72,4 +72,6 @@ public class ProductService {
         result.setStock(stockService.addToStock(result.getId(), result));
         return result;
     }
-}
+
+
+    }

@@ -27,6 +27,11 @@ class StockServiceTest {
         assertEquals(7, stock1.getQuantity());
     }
 
+    @Test
+    void ChangeQuantity() throws Exception {
 
+        Stock stock2 = stockService.changeQuantity(3L, 5);
+                assertEquals(5, stockService.findById(3L).get().getQuantity());
+    }
 }
 
