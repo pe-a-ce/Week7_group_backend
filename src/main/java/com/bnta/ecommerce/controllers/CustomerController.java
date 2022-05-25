@@ -54,6 +54,11 @@ public class CustomerController {
         }
     }
 
+    @DeleteMapping("/customers/{id}") // Delete a customer by id
+    public void removeCustomer(@PathVariable Long customerId){
+        customerService.deleteCustomer(customerId);
+        // when creating a new customer in postman, will delete all the info just be id BUT
+    }
 }
 
 
