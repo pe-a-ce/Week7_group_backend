@@ -63,4 +63,31 @@ public class StockService {
         }
         return stockRepository.save(new Stock(quantity, product.get()));
     }
+
+    public Stock changeQuantity(Long id, int quantity) throws Exception{
+        if (quantity < 0){
+            throw new Exception("Quantity cannot be negative!");
+        } else if (stockRepository.findById(id).isEmpty()) {
+            throw new Exception("No such stock count in database!");
+        }
+        Optional<Stock> stockToUpdate = stockRepository.findById(id);
+        stockToUpdate.get().setQuantity(quantity);
+        stockRepository.save(stockToUpdate.get());
+        return stockToUpdate.get();
+    }
+
+    public Boolean alterStockQuantity(Long id, Integer change) throws Exception {
+        Optional<Stock> stockOptional = stockRepository.findById(id);
+
+        if (stockOptional.isEmpty()) {
+            throw new Exception("Stock does not exist!");
+        }
+
+        if (stockOptional.get().getQuantity() + change < 0) {
+            throw new Exception("Not enough stock.");
+        }
+
+        stockRepository.alterStockQuantity(change, stockOptional.get().getId());
+        return true;
+    }
 }
