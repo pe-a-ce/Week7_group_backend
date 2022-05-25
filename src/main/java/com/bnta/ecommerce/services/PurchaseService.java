@@ -18,15 +18,13 @@ public class PurchaseService {
 
     @Autowired
     private PurchaseRepository purchaseRepository;
-    @Autowired
-    private StockService stockService;
 
     public PurchaseService() {}
 
-    public PurchaseService(PurchaseRepository purchaseRepository, StockService stockService) {
+    public PurchaseService(PurchaseRepository purchaseRepository) {
         this.purchaseRepository = purchaseRepository;
-        this.stockService = stockService;
     }
+
 
     public Optional<Purchase> findByPurchaseId(Long id) {
         return purchaseRepository.findById(id);
@@ -82,6 +80,17 @@ public class PurchaseService {
         );
     }
 
+//    public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
+//        return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
+//    }
+//
+//    public void makePurchase(Long CustomerId, Long ProductId){
+//        purchaseRepository.makePurchase(CustomerId, ProductId);
+//    }
+//
+//    public void updatePurchaseQuantity(Long purchaseId){
+//        purchaseRepository.updatePurchaseQuantity(purchaseId);
+//    }
 
     public String addToBasket(String customerIdString, String productIdString, String purchaseQuantityString) {
         Long customerId;
@@ -94,27 +103,16 @@ public class PurchaseService {
             purchaseQuantity = Integer.parseInt(purchaseQuantityString);
         }
         catch (NumberFormatException nfe) {
-            throw new RuntimeException("Inputs must be numbers");
+            throw new RuntimeException("IDs must be numbers");
         }
 
         if (customerId <= 0 || productId <= 0) {
             throw new RuntimeException("IDs must be greater than 0.");
         }
 
-        if (purchaseQuantity <= 0) {
-            throw new RuntimeException("Quantity must be at least 1.");
-        }
-
         // check customer wallet
 
-
         // alterStockQuantity
-        try {
-            stockService.alterStockQuantityService(productId, -purchaseQuantity);
-        }
-        catch (Exception e){
-            throw new RuntimeException(e.getMessage());
-        }
 
         Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
 
