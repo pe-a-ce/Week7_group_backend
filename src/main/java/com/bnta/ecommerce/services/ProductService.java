@@ -5,7 +5,6 @@ import com.bnta.ecommerce.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -102,28 +101,39 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> searchAllProducts(String query) throws Exception{
-//        ArrayList<String> querySplit = new ArrayList<String>(List.of(query.split(" ")));
-        List<Product> byManufacturer = Arrays.stream(query.split(" "))
-                .map(q -> productRepository.findByManufacturerContainingIgnoreCase(q))
-                .findAny().orElse(null);
-
-        List<Product> byModel = Arrays.stream(query.split(" "))
-                .map(q -> productRepository.findByModelContainingIgnoreCase(q)).findAny().orElse(null);
-
-        List<Product> result;
-        if (byManufacturer != null && byModel != null){
-            result = byModel.stream().filter(b -> byManufacturer.contains(b)).toList();
+    public List<Product> searchForProducts(String query) throws Exception{
+        List<Product> results = Arrays.stream(query.split(" "))
+                .map(q -> productRepository.findEitherManufacturerOrModel(q))
+                .findAny()
+                .orElse(null);
+        if (results == null){
+            throw new Exception("No cars found!");
         }
-        if (byManufacturer == null && byModel == null){
-            throw new Exception("No cars found");
-        }
-        if (byManufacturer != null){
-            result = byManufacturer;
-        }
-        else {
-            result = byModel;
-        }
-        return result;
+        return results;
     }
+
+//    public List<Product> searchAllProducts(String query) throws Exception{
+////        ArrayList<String> querySplit = new ArrayList<String>(List.of(query.split(" ")));
+//        List<Product> byManufacturer = Arrays.stream(query.split(" "))
+//                .map(q -> productRepository.findByManufacturerContainingIgnoreCase(q))
+//                .findAny().orElse(null);
+//
+//        List<Product> byModel = Arrays.stream(query.split(" "))
+//                .map(q -> productRepository.findByModelContainingIgnoreCase(q)).findAny().orElse(null);
+//
+//        List<Product> result;
+//        if (byManufacturer != null && byModel != null){
+//            result = byModel.stream().filter(b -> byManufacturer.contains(b)).toList();
+//        }
+//        if (byManufacturer == null && byModel == null){
+//            throw new Exception("No cars found");
+//        }
+//        if (byManufacturer != null){
+//            result = byManufacturer;
+//        }
+//        else {
+//            result = byModel;
+//        }
+//        return result;
+//    }
 }
