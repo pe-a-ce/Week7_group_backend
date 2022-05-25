@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
@@ -20,6 +21,12 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
             value = "UPDATE stock SET quantity = quantity + ?1 WHERE id = ?2",
             nativeQuery = true
     )
-    Integer alterStockQuantity(Integer quantity, Long id);
+    void alterStockQuantity(Integer quantity, Long id);
+
+    @Query(
+            value = "SELECT * FROM stock WHERE product_id = ?1",
+            nativeQuery = true
+    )
+    Optional<Stock> findByProductId(Long id);
 
 }

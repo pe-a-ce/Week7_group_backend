@@ -18,13 +18,15 @@ public class PurchaseService {
 
     @Autowired
     private PurchaseRepository purchaseRepository;
+    @Autowired
+    private StockService stockService;
 
     public PurchaseService() {}
 
-    public PurchaseService(PurchaseRepository purchaseRepository) {
+    public PurchaseService(PurchaseRepository purchaseRepository, StockService stockService) {
         this.purchaseRepository = purchaseRepository;
+        this.stockService = stockService;
     }
-
 
     public Optional<Purchase> findByPurchaseId(Long id) {
         return purchaseRepository.findById(id);
@@ -110,9 +112,19 @@ public class PurchaseService {
             throw new RuntimeException("IDs must be greater than 0.");
         }
 
+        if (purchaseQuantity <= 0) {
+            throw new RuntimeException("Quantity must be at least 1.");
+        }
         // check customer wallet
 
         // alterStockQuantity
+        try {
+            stockService.alterStockQuantity(productId, -purchaseQuantity);
+        }
+        catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
+
 
         Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
 
