@@ -34,10 +34,8 @@ public class StockService {
         return stockRepository.findById(id);
    }
 
-   public Stock addToStock(Long id, Product product){
-       Stock stock = new Stock(0, product);
-       stock.setId(id);
-       return stockRepository.save(stock);
+   public Stock addToStock(Product product){
+       return stockRepository.save(new Stock(0, product));
    }
 
     public Boolean deleteStock(Long id) throws Exception{

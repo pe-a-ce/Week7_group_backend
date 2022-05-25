@@ -69,7 +69,27 @@ public class ProductService {
             throw new Exception("Product ID already in use!");
         }
         Product result = productRepository.save(product);
-        result.setStock(stockService.addToStock(result.getId(), result));
+        result.setStock(stockService.addToStock(result));
         return result;
+    }
+
+    public Product alterProduct(Long id, String manufacturer, String model, Double price) throws Exception{
+        Optional<Product> oProduct = productRepository.findById(id);
+
+        if (oProduct.isEmpty()){
+            throw new Exception("Product not found!");
+        }
+        Product product = oProduct.get();
+        if (manufacturer != null){
+            product.setManufacturer(manufacturer);
+        }
+        if (model != null){
+            product.setModel(model);
+        }
+        if (price != null){
+            product.setPrice(price);
+        }
+        productRepository.save(product);
+        return product;
     }
 }

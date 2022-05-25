@@ -59,10 +59,23 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
-            product.setId(null);
             return ResponseEntity.ok().body(productService.createProduct(product));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
+    }
+
+    @PutMapping("/put")
+    public ResponseEntity<Product> changeProductAttributes(
+            @RequestParam(name = "Product ID") Long id,
+            @RequestParam(required = false, name = "Manufacturer") String manufacturer,
+            @RequestParam(required = false, name = "Model") String model,
+            @RequestParam(required = false, name = "Price") Double price
+    ){
+       try {
+           return ResponseEntity.ok().body(productService.alterProduct(id, manufacturer, model, price));
+       } catch (Exception e){
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+       }
     }
 }
