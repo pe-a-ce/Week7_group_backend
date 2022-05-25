@@ -47,4 +47,9 @@ public class CustomerService {
 
         return customerRepository.save(customer);
     }
+
+    public void deleteCustomer(Long customerId) {
+        this.customerRepository.deleteById(customerId);
+    }
 }
+
