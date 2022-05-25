@@ -38,7 +38,7 @@ public class ProductService {
         List<Product> priceRange = productRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(minPrice, maxPrice);
         List<Product> result = inStock.stream().filter(priceRange::contains).collect(Collectors.toList());
         if (manufacturer != null){
-            List<Product> byManufacturer = productRepository.findByManufacturerIgnoreCase("%" + manufacturer.trim() + "%");
+            List<Product> byManufacturer = productRepository.findByManufacturerContainingIgnoreCase(manufacturer.trim());
             if (byManufacturer.isEmpty()){
                 throw new Exception("No cars by this manufacturer stocked!");
             }
