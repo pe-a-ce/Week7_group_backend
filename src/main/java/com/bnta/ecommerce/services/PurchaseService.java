@@ -82,17 +82,6 @@ public class PurchaseService {
         );
     }
 
-//    public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
-//        return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
-//    }
-//
-//    public void makePurchase(Long CustomerId, Long ProductId){
-//        purchaseRepository.makePurchase(CustomerId, ProductId);
-//    }
-//
-//    public void updatePurchaseQuantity(Long purchaseId){
-//        purchaseRepository.updatePurchaseQuantity(purchaseId);
-//    }
 
     public String addToBasket(String customerIdString, String productIdString, String purchaseQuantityString) {
         Long customerId;
@@ -105,7 +94,7 @@ public class PurchaseService {
             purchaseQuantity = Integer.parseInt(purchaseQuantityString);
         }
         catch (NumberFormatException nfe) {
-            throw new RuntimeException("IDs must be numbers");
+            throw new RuntimeException("Inputs must be numbers");
         }
 
         if (customerId <= 0 || productId <= 0) {
@@ -115,7 +104,9 @@ public class PurchaseService {
         if (purchaseQuantity <= 0) {
             throw new RuntimeException("Quantity must be at least 1.");
         }
+
         // check customer wallet
+
 
         // alterStockQuantity
         try {
@@ -124,7 +115,6 @@ public class PurchaseService {
         catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
-
 
         Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
 

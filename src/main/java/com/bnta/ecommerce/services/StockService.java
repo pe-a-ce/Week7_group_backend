@@ -79,9 +79,8 @@ public class StockService {
     public Boolean alterStockQuantityService(Long id, Integer change) throws Exception {
         Optional<Stock> stockOptional = stockRepository.findByProductId(id);
 
-
         if (stockOptional.isEmpty()) {
-            throw new Exception("Stock does not exist!");
+            throw new Exception("Product not stocked.");
         }
 
         if (stockOptional.get().getQuantity() + change < 0) {
