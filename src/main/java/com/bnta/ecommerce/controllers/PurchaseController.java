@@ -35,7 +35,7 @@ public class PurchaseController {
 
     @GetMapping("/purchases")
     public ResponseEntity searchPurchases(
-            @RequestParam(required = false, defaultValue = "0") String minQuantity,
+            @RequestParam(required = false, defaultValue = "1") String minQuantity,
             @RequestParam(required = false, defaultValue = "2000") String maxQuantity,
             @RequestParam(required = false, defaultValue = "1000-01-01") String fromDate,
             @RequestParam(required = false, defaultValue = "4000-01-01") String toDate,
