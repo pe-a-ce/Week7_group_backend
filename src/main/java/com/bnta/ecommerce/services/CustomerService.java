@@ -53,12 +53,6 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-
-    public Optional<Customer> findByEmail(String email) {
-        return customerRepository.findByEmail(email);
-    }
-
-
     public Integer updateCustomerUsername(String username, String email) {
 
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
