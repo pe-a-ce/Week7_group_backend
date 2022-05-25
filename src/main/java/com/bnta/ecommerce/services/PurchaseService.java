@@ -3,6 +3,8 @@ package com.bnta.ecommerce.services;
 import com.bnta.ecommerce.models.Purchase;
 import com.bnta.ecommerce.repositories.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -86,12 +88,40 @@ public class PurchaseService {
         purchaseRepository.makePurchase(CustomerId, ProductId);
     }
 
-    public void addNewPurchase() {
-
-    }
-
     public void updatePurchaseQuantity(Long purchaseId){
         purchaseRepository.updatePurchaseQuantity(purchaseId);
+    }
+
+    public String addToBasket(String customerIdString, String productIdString, String purchaseQuantityString) {
+        Long customerId;
+        Long productId;
+        Integer purchaseQuantity;
+
+        try {
+            customerId = Long.parseLong(customerIdString);
+            productId = Long.parseLong(productIdString);
+            purchaseQuantity = Integer.parseInt(purchaseQuantityString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("IDs must be numbers");
+        }
+
+        if (customerId <= 0 || productId <= 0) {
+            throw new RuntimeException("IDs must be greater than 0.");
+        }
+
+        // check customer wallet
+
+        // alterStockQuantity
+
+        Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
+
+        if (purchaseOptional.isPresent()) {
+            purchaseRepository.updatePurchaseQuantity(purchaseOptional.get().getId());
+            return "Purchase quantity updated.";
+        }
+        purchaseRepository.makePurchase(customerId, productId);
+        return "Purchase created";
     }
 }
 
