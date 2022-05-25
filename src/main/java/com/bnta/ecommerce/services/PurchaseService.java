@@ -203,10 +203,14 @@ public class PurchaseService {
 
         customerRepository.updateCustomerWallet(-basketTotalPrice, customer.getId());
 
-        // alter stock quantity
+        // alter stock quantity and set purchases to purchased with purchased date
+        for (Purchase purchase: customerBasket) {
+            Stock stock = stockRepository.findByProductId(purchase.getProduct().getId()).get();
+            stockRepository.alterStockQuantity(-purchase.getPurchaseQuantity(), stock.getId());
+            purchaseRepository.makePurchase(LocalDate.now().toString(), customerId);
+        }
 
-
-        return null;
+        return "Purchase successful!";
     }
 }
 

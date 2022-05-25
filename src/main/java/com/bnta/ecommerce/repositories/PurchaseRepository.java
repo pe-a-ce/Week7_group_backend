@@ -82,5 +82,16 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     " WHERE id = ?1",
             nativeQuery = true)
     int updateBasketQuantity(Long purchaseId);
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE purchase " +
+                    "SET (purchased, purchased_date) = (TRUE, CAST(?1 AS DATE)) " +
+                    "WHERE customer_id = ?2 AND purchased = FALSE",
+            nativeQuery = true
+    )
+    int makePurchase(String purchaseDate, Long customerId);
 }
 
