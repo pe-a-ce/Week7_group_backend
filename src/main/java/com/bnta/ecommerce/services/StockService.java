@@ -63,4 +63,11 @@ public class StockService {
         }
         return stockRepository.save(new Stock(quantity, product.get()));
     }
+
+    public Stock changeQuantity(Long id, int quantity){
+        Optional<Stock> stockToUpdate = stockRepository.findById(id);
+        stockToUpdate.get().setQuantity(quantity);
+        stockRepository.save(stockToUpdate.get());
+        return stockToUpdate.get();
+    }
 }
