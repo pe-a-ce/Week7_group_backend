@@ -28,7 +28,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Product> returnRelevantProducts(int stockRequired, String manufacturer, Double minPrice, Double maxPrice) throws Exception{
+    public List<Product> returnRelevantProducts(int stockRequired, String manufacturer, String model, Double minPrice, Double maxPrice) throws Exception{
 
         if (minPrice > maxPrice){
             throw new Exception("Minimum price must be lower than maximum price!");
@@ -43,6 +43,13 @@ public class ProductService {
                 throw new Exception("No cars by this manufacturer stocked!");
             }
             result = result.stream().filter(byManufacturer::contains).collect(Collectors.toList());
+        }
+        if (model != null){
+            List<Product> byModel = productRepository.findByModelContainingIgnoreCase(model.trim());
+            if (byModel.isEmpty()){
+                throw new Exception("Model not stocked!");
+            }
+            result = result.stream().filter(byModel::contains).collect(Collectors.toList());
         }
         if (inStock.isEmpty()){
             throw new Exception("No cars in stock!");

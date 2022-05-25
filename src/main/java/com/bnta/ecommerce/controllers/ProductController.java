@@ -34,11 +34,12 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
             @RequestParam(required = false, name = "Manufacturer") String manufacturer,
+            @RequestParam(required = false, name = "Model") String model,
             @RequestParam(required = false, name = "Minimum Price", defaultValue = "0") Double minPrice,
             @RequestParam(required = false, name = "Maximum Price", defaultValue = "100") Double maxPrice
     ) {
         try{
-            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, manufacturer, minPrice, maxPrice));
+            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, manufacturer, model, minPrice, maxPrice));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
