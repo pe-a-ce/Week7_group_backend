@@ -2122,3 +2122,5 @@ insert into purchase (purchase_quantity, purchased, purchased_date, customer_id,
 insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, TRUE, '2017-09-27', 9, 12);
 insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, TRUE, '2018-11-20', 10, 15);
 insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (2, TRUE, '2022-05-01', 11, 16);
+insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, FALSE, null, 10, 10);
+insert into purchase (purchase_quantity, purchased, purchased_date, customer_id, product_id) values (1, FALSE, null, 10, 11);

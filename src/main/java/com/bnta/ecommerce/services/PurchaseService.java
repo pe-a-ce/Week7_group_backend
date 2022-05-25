@@ -1,10 +1,13 @@
 package com.bnta.ecommerce.services;
 
+import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.models.Purchase;
+import com.bnta.ecommerce.models.Stock;
+import com.bnta.ecommerce.repositories.CustomerRepository;
+import com.bnta.ecommerce.repositories.ProductRepository;
 import com.bnta.ecommerce.repositories.PurchaseRepository;
+import com.bnta.ecommerce.repositories.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,19 +15,33 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletionService;
 
 @Service
 public class PurchaseService {
 
     @Autowired
     private PurchaseRepository purchaseRepository;
+    @Autowired
+    private StockService stockService;
+    @Autowired
+    private StockRepository stockRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public PurchaseService() {}
 
-    public PurchaseService(PurchaseRepository purchaseRepository) {
+    public PurchaseService(PurchaseRepository purchaseRepository,
+                           StockService stockService,
+                           CustomerRepository customerRepository,
+                           ProductRepository productRepository) {
         this.purchaseRepository = purchaseRepository;
+        this.stockService = stockService;
+        this.customerRepository = customerRepository;
+        this.productRepository = productRepository;
     }
-
 
     public Optional<Purchase> findByPurchaseId(Long id) {
         return purchaseRepository.findById(id);
@@ -80,17 +97,6 @@ public class PurchaseService {
         );
     }
 
-//    public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
-//        return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
-//    }
-//
-//    public void makePurchase(Long CustomerId, Long ProductId){
-//        purchaseRepository.makePurchase(CustomerId, ProductId);
-//    }
-//
-//    public void updatePurchaseQuantity(Long purchaseId){
-//        purchaseRepository.updatePurchaseQuantity(purchaseId);
-//    }
 
     public String addToBasket(String customerIdString, String productIdString, String purchaseQuantityString) {
         Long customerId;
@@ -103,25 +109,108 @@ public class PurchaseService {
             purchaseQuantity = Integer.parseInt(purchaseQuantityString);
         }
         catch (NumberFormatException nfe) {
-            throw new RuntimeException("IDs must be numbers");
+            throw new RuntimeException("Inputs must be numbers.");
         }
 
         if (customerId <= 0 || productId <= 0) {
             throw new RuntimeException("IDs must be greater than 0.");
         }
 
-        // check customer wallet
+        if (purchaseQuantity <= 0) {
+            throw new RuntimeException("Quantity must be at least 1.");
+        }
 
-        // alterStockQuantity
+        Optional<Stock> stockOptional = stockRepository.findByProductId(productId);
+
+        if (stockOptional.isEmpty()) {
+            throw new RuntimeException("Product not stocked.");
+        }
+
+        if (stockOptional.get().getQuantity() < purchaseQuantity) {
+            throw new RuntimeException("Not enough in items in stock.");
+        }
 
         Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
 
         if (purchaseOptional.isPresent()) {
-            purchaseRepository.updatePurchaseQuantity(purchaseOptional.get().getId());
+            purchaseRepository.updateBasketQuantity(purchaseOptional.get().getId());
             return "Purchase quantity updated.";
         }
-        purchaseRepository.makePurchase(customerId, productId);
+        purchaseRepository.addToBasket(customerId, productId);
         return "Purchase created";
+    }
+
+
+
+    public String makePurchase(String customerIdString) {
+
+        Long customerId;
+
+        try {
+            customerId = Long.parseLong(customerIdString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("ID must be a number!");
+        }
+
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+
+        if(customerOptional.isEmpty()) {
+            throw new RuntimeException("Customer does not exist.");
+        }
+
+        List<Purchase> customerBasket = purchaseRepository.getBasketByCustomerId(customerId);
+
+        if (customerBasket.isEmpty()) {
+            throw new RuntimeException("Basket empty!");
+        }
+
+        Double basketTotalPrice = 0.00;
+
+        for(Purchase purchase: customerBasket) {
+            Optional<Stock> stockOptional = stockRepository.findByProductId(purchase.getProduct().getId());
+
+            if (stockOptional.isEmpty()) {
+                throw new RuntimeException("Product " +
+                        purchase.getProduct().getManufacturer() +
+                        " " +
+                        purchase.getProduct().getModel() +
+                        " is no longer stocked.");
+            }
+
+            Integer currentStockQuantity = stockOptional.get().getQuantity();
+
+            if (currentStockQuantity < purchase.getPurchaseQuantity()) {
+                throw new RuntimeException(
+                        "Please reduce your quantity for " +
+                                purchase.getProduct().getManufacturer() +
+                                " " +
+                                purchase.getProduct().getModel() +
+                                ", this item is low on stock."
+                );
+            }
+
+            basketTotalPrice += purchase.getPurchaseQuantity() * purchase.getProduct().getPrice();
+        }
+
+        Customer customer = customerOptional.get();
+
+        if (basketTotalPrice > customer.getWallet()) {
+            throw new RuntimeException(
+                    "You are low on credit, the total is " + basketTotalPrice + " , you have " + customer.getWallet() + "."
+            );
+        }
+
+        customerRepository.updateCustomerWallet(-basketTotalPrice, customer.getId());
+
+        // alter stock quantity and set purchases to purchased with purchased date
+        for (Purchase purchase: customerBasket) {
+            Stock stock = stockRepository.findByProductId(purchase.getProduct().getId()).get();
+            stockRepository.alterStockQuantity(-purchase.getPurchaseQuantity(), stock.getId());
+            purchaseRepository.makePurchase(LocalDate.now().toString(), customerId);
+        }
+
+        return "Purchase successful!";
     }
 }
 

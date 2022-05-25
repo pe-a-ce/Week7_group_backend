@@ -1,6 +1,7 @@
 package com.bnta.ecommerce.controllers;
 
 import com.bnta.ecommerce.models.Purchase;
+import com.bnta.ecommerce.repositories.PurchaseRepository;
 import com.bnta.ecommerce.services.PurchaseService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ class PurchaseControllerTest {
 
     @Autowired
     PurchaseService purchaseService;
+    @Autowired
+    PurchaseRepository purchaseRepository;
 
     @Test
     @Transactional
@@ -29,7 +32,7 @@ class PurchaseControllerTest {
     @Test
     void findPurchaseByProductId() {
 //will only show what is in the 'basket' so those with false for isPurchased question
-        Purchase purchase2 = purchaseService.findByProductCustomerId(1l, 1l).get();
+        Purchase purchase2 = purchaseRepository.findByProductCustomerId(1l, 1l).get();
 
        assertAll("With Product id 1, should return a Lexus IS F purchased by Benita Pipworth",
                ()-> assertEquals("Lexus", purchase2.getProduct().getManufacturer()),
