@@ -88,7 +88,7 @@ public class PurchaseController {
     // Purchase all items in basket for a particular customer
     @PutMapping("/purchases")
     public ResponseEntity makePurchase(
-            @RequestBody(required = true) String customerId
+            @RequestParam(required = true) String customerId
     ) {
         try {
             String status = purchaseService.makePurchase(customerId);
