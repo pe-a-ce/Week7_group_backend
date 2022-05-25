@@ -65,8 +65,12 @@ public class StockController {
     public ResponseEntity<Stock> changeQuantity(
             @RequestParam(name = "Stock ID") Long id,
             @RequestParam(name = "New Quantity") int quantity){
-        Stock updatedStock = stockService.changeQuantity(id, quantity);
-        return ResponseEntity.ok().body(updatedStock);
+        try{
+            Stock updatedStock = stockService.changeQuantity(id, quantity);
+            return ResponseEntity.ok().body(updatedStock);
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
     }
 }
 
