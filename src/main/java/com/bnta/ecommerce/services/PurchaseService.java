@@ -80,17 +80,17 @@ public class PurchaseService {
         );
     }
 
-    public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
-        return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
-    }
-
-    public void makePurchase(Long CustomerId, Long ProductId){
-        purchaseRepository.makePurchase(CustomerId, ProductId);
-    }
-
-    public void updatePurchaseQuantity(Long purchaseId){
-        purchaseRepository.updatePurchaseQuantity(purchaseId);
-    }
+//    public Optional<Purchase> findByProductCustomerId(Long CustomerId, Long ProductId){
+//        return purchaseRepository.findByProductCustomerId(CustomerId, ProductId);
+//    }
+//
+//    public void makePurchase(Long CustomerId, Long ProductId){
+//        purchaseRepository.makePurchase(CustomerId, ProductId);
+//    }
+//
+//    public void updatePurchaseQuantity(Long purchaseId){
+//        purchaseRepository.updatePurchaseQuantity(purchaseId);
+//    }
 
     public String addToBasket(String customerIdString, String productIdString, String purchaseQuantityString) {
         Long customerId;
