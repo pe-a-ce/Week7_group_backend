@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -65,6 +64,7 @@ public class CustomerController {
             "email": "",
             "username": ""
         }
+
      */
     @PutMapping("/customers/security/username")
     public ResponseEntity updateCustomerUsername(@RequestBody Map<String, String> payload) {
@@ -88,14 +88,29 @@ public class CustomerController {
         }
     }
 
+    /*
+        payload:
+        {
+            "email": "",
+            "password": ""
+        }
+
+     */
     @PutMapping("/customers/security/password")
     public ResponseEntity updateCustomerPassword(@RequestBody Map<String, String> payload) {
-        return null;
+        try {
+            customerService.updateCustomerPassword(payload.get("email"), payload.get("password"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 
     // Information includes: name, address, number
-    @PutMapping("/customers/info")
+
+    @PutMapping("/customers/info/name")
     public ResponseEntity updateCustomerInformation(@RequestBody Map<String, String> payload) {
         return null;
     }

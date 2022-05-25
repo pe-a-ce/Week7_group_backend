@@ -53,6 +53,7 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+
     public Integer updateCustomerUsername(String username, String email) {
 
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
@@ -82,7 +83,19 @@ public class CustomerService {
             return customerRepository.updateCustomerEmail(email, customerOptional.get().getId());
         }
         catch (DataIntegrityViolationException dive) {
-            throw new RuntimeException("This email is alread in use, please try another.");
+            throw new RuntimeException("This email is already in use, please try another.");
         }
+    }
+
+
+    public Integer updateCustomerPassword(String email, String password) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        return customerRepository.updateCustomerPassword(password, customerOptional.get().getId());
     }
 }
