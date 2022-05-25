@@ -34,11 +34,12 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
             @RequestParam(required = false, name = "Manufacturer") String manufacturer,
+            @RequestParam(required = false, name = "Model") String model,
             @RequestParam(required = false, name = "Minimum Price", defaultValue = "0") Double minPrice,
             @RequestParam(required = false, name = "Maximum Price", defaultValue = "100") Double maxPrice
     ) {
         try{
-            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, manufacturer, minPrice, maxPrice));
+            return ResponseEntity.ok().body(productService.returnRelevantProducts(inStockRequired ? 1 : 0, manufacturer, model, minPrice, maxPrice));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -56,13 +57,35 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/openSearch")
+    public ResponseEntity<List<Product>> searchAllProducts(@RequestParam (name = "Search all cars") String query){
+        try{
+            return ResponseEntity.ok().body(productService.searchForProducts(query));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
-            product.setId(null);
             return ResponseEntity.ok().body(productService.createProduct(product));
         } catch (Exception e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
+    }
+
+    @PutMapping("/put")
+    public ResponseEntity<Product> changeProductAttributes(
+            @RequestParam(name = "Product ID") Long id,
+            @RequestParam(required = false, name = "Manufacturer") String manufacturer,
+            @RequestParam(required = false, name = "Model") String model,
+            @RequestParam(required = false, name = "Price") Double price
+    ){
+       try {
+           return ResponseEntity.ok().body(productService.alterProduct(id, manufacturer, model, price));
+       } catch (Exception e){
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+       }
     }
 }
