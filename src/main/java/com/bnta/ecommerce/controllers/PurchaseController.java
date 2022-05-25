@@ -3,6 +3,7 @@ package com.bnta.ecommerce.controllers;
 import com.bnta.ecommerce.models.Purchase;
 import com.bnta.ecommerce.models.Stock;
 import com.bnta.ecommerce.services.PurchaseService;
+import com.bnta.ecommerce.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,14 @@ public class PurchaseController {
     @Autowired
     private PurchaseService purchaseService;
 
+    @Autowired
+    private StockService stockService;
+
     public PurchaseController() {}
 
-    public PurchaseController(PurchaseService purchaseService) {
+    public PurchaseController(PurchaseService purchaseService, StockService stockService) {
         this.purchaseService = purchaseService;
+        this.stockService = stockService;
     }
 
     @GetMapping("/purchase/{id}") // Get Purchase by ID
@@ -51,12 +56,22 @@ public class PurchaseController {
     }
 
 
+    /*
+
+            payload
+            {
+                "customerId": "",
+                "productID": "",
+                "purchaseQuantity": ""
+            }
+     */
     @PostMapping("/purchases") //Add new purchase
     public ResponseEntity makePurchase(
             @RequestBody(required = true) Map<String, String> payload){
 
         Long customerId;
         Long productId;
+        Integer purchaseQuantity;
 
         try {
             customerId = Long.parseLong(payload.get("customerId"));
@@ -69,6 +84,15 @@ public class PurchaseController {
         if (customerId <= 0 || productId <= 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IDs must be greater than 0.");
         }
+
+        // check customer wallet
+
+        // alterStockQuantity
+
+//        try {
+//            stockService.alterStockQuantity();
+//        }
+
 
         Optional<Purchase> purchase = purchaseService.findByProductCustomerId(customerId, productId);
 

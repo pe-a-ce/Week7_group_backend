@@ -75,4 +75,19 @@ public class StockService {
         stockRepository.save(stockToUpdate.get());
         return stockToUpdate.get();
     }
+
+    public Boolean alterStockQuantity(Long id, Integer change) throws Exception {
+        Optional<Stock> stockOptional = stockRepository.findById(id);
+
+        if (stockOptional.isEmpty()) {
+            throw new Exception("Stock does not exist!");
+        }
+
+        if (stockOptional.get().getQuantity() + change < 0) {
+            throw new Exception("Not enough stock.");
+        }
+
+        stockRepository.alterStockQuantity(change, stockOptional.get().getId());
+        return true;
+    }
 }
