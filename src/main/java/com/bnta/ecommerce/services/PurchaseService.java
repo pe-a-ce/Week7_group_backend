@@ -119,7 +119,7 @@ public class PurchaseService {
 
         // alterStockQuantity
         try {
-            stockService.alterStockQuantity(productId, -purchaseQuantity);
+            stockService.alterStockQuantityService(productId, -purchaseQuantity);
         }
         catch (Exception e){
             throw new RuntimeException(e.getMessage());
