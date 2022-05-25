@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -52,6 +54,38 @@ public class CustomerController {
         catch (RuntimeException re) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
         }
+    }
+
+
+    // Security includes: username, email, password
+
+    /*
+        payload:
+        {
+            "email": "",
+            "username": ""
+        }
+     */
+    @PutMapping("/customers/security/username")
+    public ResponseEntity updateCustomerUsername(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerUsername(payload.get("username"), payload.get("email"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
+//    @PutMapping("/customers/security/email")
+//    public ResponseEntity
+
+
+
+    // Information includes: name, address, number
+    @PutMapping("/customers/info")
+    public ResponseEntity updateCustomerInformation(@RequestBody Map<String, String> payload) {
+        return null;
     }
 
 }

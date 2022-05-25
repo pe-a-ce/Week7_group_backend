@@ -4,8 +4,11 @@ import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.repositories.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +49,27 @@ public class CustomerService {
         customer.setEmail(customerEmail);
 
         return customerRepository.save(customer);
+    }
+
+
+    public Optional<Customer> findByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+
+    public Integer updateCustomerUsername(String username, String email) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found.");
+        }
+
+        try {
+            return customerRepository.updateCustomerUsername(username, customerOptional.get().getId());
+        }
+        catch (DataIntegrityViolationException dive) {
+            throw new RuntimeException("This username is already used, please try another.");
+        }
     }
 }
