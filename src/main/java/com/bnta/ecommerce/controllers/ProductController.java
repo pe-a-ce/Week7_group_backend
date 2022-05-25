@@ -57,6 +57,15 @@ public class ProductController {
         }
     }
 
+    @GetMapping("/openSearch")
+    public ResponseEntity<List<Product>> searchAllProducts(@RequestParam (name = "Search all cars") String query){
+        try{
+            return ResponseEntity.ok().body(productService.searchAllProducts(query));
+        } catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
