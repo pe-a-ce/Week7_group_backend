@@ -52,7 +52,8 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     )
     Optional<Purchase> findByProductCustomerId(Long customerId, Long productId);
 
-
+    @Transactional
+    @Modifying
     @Query(
             value = "insert into " +
                     " purchase " +
