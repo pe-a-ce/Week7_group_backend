@@ -65,13 +65,4 @@ public class ProductController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity<Boolean> deleteProduct(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok().body(productService.deleteProduct(id));
-        } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
 }

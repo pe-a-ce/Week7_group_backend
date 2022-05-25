@@ -36,4 +36,14 @@ public class StockService {
        stock.setId(id);
        return stockRepository.save(stock);
    }
+
+    public Boolean deleteStock(Long id) throws Exception{
+        Optional<Stock> stock = stockRepository.findById(id);
+        if (stock.isPresent()){
+            stockRepository.deleteById(id);
+            return true;
+        } else {
+            throw new Exception("Product not found");
+        }
+    }
 }

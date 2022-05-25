@@ -20,10 +20,10 @@ public class Product {
     private String manufacturer;
 
     @JsonIgnoreProperties({"product"})
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
     private Stock stock;
     @JsonIgnore
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<Purchase> purchases;
 
     public Product() {}
