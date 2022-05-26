@@ -13,7 +13,7 @@
 
 Our application acts as a database for products and stock held by an online car dealership. The front end UI can view and manage the database, which includes tables for registered customers, purchases and cars stocked by the seller. 
 
-![image](https://user-images.githubusercontent.com/99202770/170462892-b3b8dc34-5183-474f-9a4b-91bb24dbcd58.jpg )
+![image]( https://user-images.githubusercontent.com/99202770/170467976-f10bc211-23e7-4ae4-85da-cd17e0412c94.jpeg )
 
 ### Customers
 
@@ -44,6 +44,7 @@ In order to create this project, we used Java with the SpringBoot framework. We 
 - Add user authentication 
 - When a user is logged in, they are restricted to the functions they can access (i.e a customer should not need to be able to update any of the products in the store)
 - Create a  Basket table that is separate from the Purchase table
+![image]( https://user-images.githubusercontent.com/99202770/170468083-cf68368a-591f-4e2e-bd39-27ee0f471831.jpeg )
 
 
 ## How to install and run the project 
