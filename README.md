@@ -41,7 +41,7 @@ In order to create this project, we used Java with the SpringBoot framework. We 
 [insert]
 
 ## Potential implementations for the future
-- Add user authentication 
+- Add user authentication to ensure that only the customer with the correct username and password can access their account
 - When a user is logged in, they are restricted to the functions they can access (i.e a customer should not need to be able to update any of the products in the store)
 - Create a  Basket table that is separate from the Purchase table
 ![image]( https://user-images.githubusercontent.com/99202770/170468083-cf68368a-591f-4e2e-bd39-27ee0f471831.jpeg )
