@@ -1,5 +1,4 @@
 # Back End E-Commerce Car Shop
-## “Zoom?”
 
 ## Back seat Programmers
 - [Haining Harry Zhen]( https://github.com/hainingzhen )
