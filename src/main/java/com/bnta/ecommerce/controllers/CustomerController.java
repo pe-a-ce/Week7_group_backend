@@ -1,5 +1,7 @@
 package com.bnta.ecommerce.controllers;
 
+import com.bnta.ecommerce.dto.CusSecEmailPasswordDto;
+import com.bnta.ecommerce.dto.CusSecEmailUsernameDto;
 import com.bnta.ecommerce.dto.CustomerDto;
 import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.services.CustomerService;
@@ -75,9 +77,12 @@ public class CustomerController {
 
      */
     @PutMapping("/customers/security/username")
-    public ResponseEntity updateCustomerUsername(@RequestBody Map<String, String> payload) {
+    public ResponseEntity updateCustomerUsername(@RequestBody CusSecEmailUsernameDto cusSecEmailUsernameDto) {
         try {
-            customerService.updateCustomerUsername(payload.get("username"), payload.get("email"));
+            customerService.updateCustomerUsername(
+                    cusSecEmailUsernameDto.getUsername(),
+                    cusSecEmailUsernameDto.getEmail()
+            );
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (RuntimeException re) {
@@ -87,9 +92,12 @@ public class CustomerController {
 
 
     @PutMapping("/customers/security/email")
-    public ResponseEntity updateCustomerEmail(@RequestBody Map<String, String> payload) {
+    public ResponseEntity updateCustomerEmail(@RequestBody CusSecEmailUsernameDto cusSecEmailUsernameDto) {
         try {
-            customerService.updateCustomerEmail(payload.get("username"), payload.get("email"));
+            customerService.updateCustomerEmail(
+                    cusSecEmailUsernameDto.getUsername(),
+                    cusSecEmailUsernameDto.getEmail()
+            );
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (RuntimeException re) {
@@ -106,9 +114,12 @@ public class CustomerController {
 
      */
     @PutMapping("/customers/security/password")
-    public ResponseEntity updateCustomerPassword(@RequestBody Map<String, String> payload) {
+    public ResponseEntity updateCustomerPassword(@RequestBody CusSecEmailPasswordDto cusSecEmailPasswordDto) {
         try {
-            customerService.updateCustomerPassword(payload.get("email"), payload.get("password"));
+            customerService.updateCustomerPassword(
+                    cusSecEmailPasswordDto.getEmail(),
+                    cusSecEmailPasswordDto.getPassword()
+            );
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (RuntimeException re) {
