@@ -30,7 +30,7 @@ public class ProductController {
         return ResponseEntity.ok().body(productService.getAllProducts());
     }
 
-    @GetMapping("/search") // Get Product, by various optional parameters
+    @GetMapping("/search") // Get list of Products, by various optional parameters
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
             @RequestParam(required = false, name = "Manufacturer") String manufacturer,
@@ -45,7 +45,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/fieldSearch")
+    @GetMapping("/specificSearch") // Get list of Products by specific manufacturer and model
     public ResponseEntity<List<Product>> getByManufacturerAndModel(
             @RequestParam(required = false, name = "Manufacturer", defaultValue = "%") String manufacturer,
             @RequestParam(required = false, name = "Model", defaultValue = "%") String model
@@ -57,7 +57,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/openSearch")
+    @GetMapping("/fieldSearch") // Get list of matching Products from single search query
     public ResponseEntity<List<Product>> searchAllProducts(@RequestParam (name = "Search all cars") String query){
         try{
             return ResponseEntity.ok().body(productService.searchForProducts(query));
