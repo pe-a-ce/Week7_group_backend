@@ -2,6 +2,7 @@ package com.bnta.ecommerce.services;
 
 import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.repositories.CustomerRepository;
+import com.bnta.ecommerce.repositories.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.relational.core.sql.In;
@@ -18,6 +19,8 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
     public CustomerService() {}
 
@@ -53,6 +56,11 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+
+//    public Boolean, Integer findUserByEmail(String email) {
+//        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+//        return customerOptional.isEmpty(),;
+//    }
 
     public Integer updateCustomerUsername(String username, String email) {
 
@@ -98,6 +106,83 @@ public class CustomerService {
 
         return customerRepository.updateCustomerPassword(password, customerOptional.get().getId());
     }
+
+
+    public Integer updateCustomerName(String email, String name) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        return customerRepository.updateCustomerName(name, customerOptional.get().getId());
+    }
+
+
+    public Integer updateCustomerAddress(String email, String address) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        return customerRepository.updateCustomerAddress(address, customerOptional.get().getId());
+    }
+
+
+    public Integer updateCustomerMobile(String email, String mobileString) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        if (!(mobileString.length() == 10)) {
+            throw new RuntimeException("Mobile should be of length 10.");
+        }
+
+        Long mobile;
+
+        try {
+            mobile = Long.parseLong(mobileString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("Mobile should only contains numbers.");
+        }
+
+        return customerRepository.updateCustomerMobile(mobile, customerOptional.get().getId());
+    }
+
+
+
+    public Integer deleteCustomer(Long id, Boolean permanent) {
+
+        Optional<Customer> customerOptional = customerRepository.findById(id);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("Customer does not exist!");
+        }
+
+        if (permanent) {
+            purchaseRepository.deletePurchaseByCustomerId(id);
+            customerRepository.customerPermanentDelete(id);
+            return null;
+        }
+        else {
+            Boolean customerDeleted = customerOptional.get().getDeleted();
+
+            if (customerDeleted) {
+                throw new RuntimeException("Customer is already marked as deleted.");
+            }
+
+            return customerRepository.customerSelfDelete(id);
+        }
+
+    }
+
 
 
 }

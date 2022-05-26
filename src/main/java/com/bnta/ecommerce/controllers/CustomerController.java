@@ -77,6 +77,7 @@ public class CustomerController {
         }
     }
 
+
     @PutMapping("/customers/security/email")
     public ResponseEntity updateCustomerEmail(@RequestBody Map<String, String> payload) {
         try {
@@ -111,10 +112,61 @@ public class CustomerController {
     // Information includes: name, address, number
 
     @PutMapping("/customers/info/name")
-    public ResponseEntity updateCustomerInformation(@RequestBody Map<String, String> payload) {
-        return null;
+    public ResponseEntity updateCustomerName(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerName(payload.get("email"), payload.get("name"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
     }
 
+    @PutMapping("/customers/info/address")
+    public ResponseEntity updateCustomerAddress(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerAddress(payload.get("email"), payload.get("address"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
+    @PutMapping("/customers/info/mobile")
+    public ResponseEntity updateCustomerMobile(@RequestBody Map<String, String> payload) {
+        try {
+            customerService.updateCustomerMobile(payload.get("email"), payload.get("mobile"));
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("/customer/{id}")
+    public ResponseEntity customerSelfDelete(@PathVariable Long id) {
+        try {
+            customerService.deleteCustomer(id, false);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+
+    @DeleteMapping("/admin/customer/{id}")
+    public ResponseEntity customerPermenantDelete(@PathVariable Long id) {
+        try {
+            customerService.deleteCustomer(id, true);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
 }
 
 
