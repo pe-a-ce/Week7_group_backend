@@ -53,11 +53,13 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     )
     Optional<Purchase> findByProductCustomerId(Long customerId, Long productId);
 
+
     @Query(
             value = "SELECT * FROM purchase WHERE customer_id = ?1 AND purchased = FALSE",
             nativeQuery = true
     )
     List<Purchase> getBasketByCustomerId(Long customerId);
+
 
     @Transactional
     @Modifying
@@ -79,10 +81,19 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     @Modifying
     @Query(
             value = "UPDATE purchase " +
-                    " SET purchase_quantity = purchase_quantity + 1 " +
-                    " WHERE id = ?1",
+                    " SET purchase_quantity = purchase_quantity + ?1 " +
+                    " WHERE id = ?2",
             nativeQuery = true)
-    int updateBasketQuantity(Long purchaseId);
+    int updateBasketQuantity(Integer change, Long purchaseId);
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "DELETE FROM purchase WHERE customer_id = ?1 AND product_id = ?2",
+            nativeQuery = true
+    )
+    Integer removeFromBasket(Long customerId, Long productId);
 
 
     @Transactional

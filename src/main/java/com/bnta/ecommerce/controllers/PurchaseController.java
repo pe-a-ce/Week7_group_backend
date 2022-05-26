@@ -30,7 +30,8 @@ public class PurchaseController {
     }
 
 
-    @GetMapping("/purchase/{id}") // Get Purchase by ID
+    // Get Purchase by ID
+    @GetMapping("/purchase/{id}")
     public ResponseEntity<Purchase> findByPurchasceId(@PathVariable Long id){
         Optional<Purchase> purchaseIdOptional = purchaseService.findByPurchaseId(id);
         if (purchaseIdOptional.isPresent()){
@@ -63,14 +64,14 @@ public class PurchaseController {
             payload
             {
                 "customerId": "",
-                "productID": "",
+                "productId": "",
                 "purchaseQuantity": ""
             }
      */
     @PostMapping("/purchases")
     public ResponseEntity addToBasket(
-            @RequestBody(required = true) Map<String, String> payload){
-
+            @RequestBody(required = true) Map<String, String> payload
+    ){
         try {
             String status = purchaseService.addToBasket(
                     payload.get("customerId"),
@@ -83,6 +84,25 @@ public class PurchaseController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
         }
     }
+
+
+
+    @DeleteMapping("/purchases")
+    public ResponseEntity removeFromBasket(
+            @RequestBody(required = true) Map<String, String> payload
+    ) {
+        try {
+            String status = purchaseService.removeFromBasket(
+                    payload.get("customerId"),
+                    payload.get("productId")
+            );
+            return ResponseEntity.status(HttpStatus.OK).body(status);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
 
 
     // Purchase all items in basket for a particular customer

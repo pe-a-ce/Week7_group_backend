@@ -133,13 +133,44 @@ public class PurchaseService {
         Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
 
         if (purchaseOptional.isPresent()) {
-            purchaseRepository.updateBasketQuantity(purchaseOptional.get().getId());
+            purchaseRepository.updateBasketQuantity(purchaseQuantity, purchaseOptional.get().getId());
             return "Purchase quantity updated.";
         }
         purchaseRepository.addToBasket(customerId, productId);
-        return "Purchase created";
+        return "Item added to basket!";
     }
 
+
+    public String removeFromBasket(String customerIdString, String productIdString) {
+
+        Long customerId;
+        Long productId;
+
+        try {
+            customerId = Long.parseLong(customerIdString);
+            productId = Long.parseLong(productIdString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("IDs must be numbers.");
+        }
+
+        if (customerId <= 0 || productId <= 0) {
+            throw new RuntimeException("IDs must be greater than 0.");
+        }
+
+        Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
+
+        if (purchaseOptional.isEmpty()) {
+            throw new RuntimeException("Item no longer in the basket.");
+        }
+
+        if (purchaseOptional.get().getPurchased()) {
+            throw new RuntimeException("Item no longer in the basket.");
+        }
+
+        purchaseRepository.removeFromBasket(customerId, productId);
+        return "Item removed from basket.";
+    }
 
 
     public String makePurchase(String customerIdString) {

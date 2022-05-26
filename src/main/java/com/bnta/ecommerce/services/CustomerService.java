@@ -57,10 +57,6 @@ public class CustomerService {
     }
 
 
-//    public Boolean, Integer findUserByEmail(String email) {
-//        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
-//        return customerOptional.isEmpty(),;
-//    }
 
     public Integer updateCustomerUsername(String username, String email) {
 
