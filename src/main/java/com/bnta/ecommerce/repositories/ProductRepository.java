@@ -21,9 +21,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByPriceGreaterThanEqualAndPriceLessThanEqual(Double minPrice, Double maxPrice);
 
-    @Query(value = "SELECT * FROM product WHERE LOWER(manufacturer) LIKE(LOWER(?1)) AND LOWER(model) LIKE(LOWER(?2))", nativeQuery = true)
-    List<Product> findByManufacturerModel(String manufacturer, String model);
-
     @Query(value = "select * from product where lower(manufacturer) like lower(?1) or lower(model) like lower(?1)", nativeQuery = true)
     List<Product> findEitherManufacturerOrModel(String query);
 }

@@ -45,18 +45,6 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/specificSearch") // Get list of Products by specific manufacturer and model
-    public ResponseEntity<List<Product>> getByManufacturerAndModel(
-            @RequestParam(required = false, name = "Manufacturer", defaultValue = "%") String manufacturer,
-            @RequestParam(required = false, name = "Model", defaultValue = "%") String model
-    ) {
-        try{
-            return ResponseEntity.ok().body(productService.searchByManufacturerAndModel(manufacturer, model));
-        } catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
     @GetMapping("/fieldSearch") // Get list of matching Products from single search query
     public ResponseEntity<List<Product>> searchAllProducts(@RequestParam (name = "Search all cars") String query){
         try{

@@ -65,14 +65,6 @@ public class ProductService {
         return result;
     }
 
-    public List<Product> searchByManufacturerAndModel(String manufacturer, String model) throws Exception {
-        List<Product> result = productRepository.findByManufacturerModel("%" + manufacturer.trim() + "%", "%" + model.trim() + "%");
-        if(result.isEmpty()){
-            throw new Exception("No cars found!");
-        }
-        return result;
-    }
-
     public Product createProduct(Product product) throws Exception {
         if (product.getId() != null && productRepository.findById(product.getId()).isPresent()){
             throw new Exception("Product ID already in use!");
