@@ -54,6 +54,11 @@ public class CustomerService {
     }
 
 
+//    public Boolean, Integer findUserByEmail(String email) {
+//        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+//        return customerOptional.isEmpty(),;
+//    }
+
     public Integer updateCustomerUsername(String username, String email) {
 
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
@@ -100,4 +105,65 @@ public class CustomerService {
     }
 
 
+    public Integer updateCustomerName(String email, String name) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        return customerRepository.updateCustomerName(name, customerOptional.get().getId());
+    }
+
+
+    public Integer updateCustomerAddress(String email, String address) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        return customerRepository.updateCustomerAddress(address, customerOptional.get().getId());
+    }
+
+
+    public Integer updateCustomerMobile(String email, String mobileString) {
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(email);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("User not found with this E-Mail.");
+        }
+
+        if (!(mobileString.length() == 10)) {
+            throw new RuntimeException("Mobile should be of length 10.");
+        }
+
+        Long mobile;
+
+        try {
+            mobile = Long.parseLong(mobileString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("Mobile should only contains numbers.");
+        }
+
+        return customerRepository.updateCustomerMobile(mobile, customerOptional.get().getId());
+    }
+
+
+
+    public Integer customerSelfDelete(Long id) {
+
+
+        return null;
+    }
+
+
+    public Integer customerPermanentDelete(Long id) {
+
+        return null;
+    }
 }

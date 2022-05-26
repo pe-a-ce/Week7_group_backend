@@ -19,6 +19,12 @@ public class Customer {
     private String password;
     @Column(name = "wallet")
     private Double wallet;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "mobile")
+    private Long mobile;
+    @Column(name = "deleted")
+    private Boolean deleted;
 
     @OneToMany(mappedBy = "customer")
     private List<Purchase> purchases;
@@ -31,6 +37,9 @@ public class Customer {
                     String email,
                     String password,
                     Double wallet,
+                    String address,
+                    Long mobile,
+                    Boolean deleted,
                     List<Purchase> purchases) {
         this.id = id;
         this.name = name;
@@ -38,6 +47,9 @@ public class Customer {
         this.email = email;
         this.password = password;
         this.wallet = wallet;
+        this.address = address;
+        this.mobile = mobile;
+        this.deleted = deleted;
         this.purchases = purchases;
     }
 
@@ -87,6 +99,30 @@ public class Customer {
 
     public void setWallet(Double wallet) {
         this.wallet = wallet;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     public List<Purchase> getPurchases() {

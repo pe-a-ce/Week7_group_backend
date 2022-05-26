@@ -55,4 +55,33 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             nativeQuery = true
     )
     Integer updateCustomerWallet(Double change, Long id);
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET name = ?1 WHERE id = ?2",
+            nativeQuery = true
+    )
+    Integer updateCustomerName(String name, Long id);
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET address = ?1 WHERE id = ?2",
+            nativeQuery = true
+    )
+    Integer updateCustomerAddress(String address, Long id);
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET mobile = ?1 WHERE id = ?2",
+            nativeQuery = true
+    )
+    Integer updateCustomerMobile(Long mobile, Long id);
+
+
+
 }
