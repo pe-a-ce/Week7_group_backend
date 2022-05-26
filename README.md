@@ -38,7 +38,10 @@ Stock objects have a one-to-one mapping with Product objects. This allows the re
 In order to create this project, we used Java with the SpringBoot framework. We used JPA repositories with PSQL to manage our databases. 
 
 ## Challenges we faced throughout the project
-[insert]
+
+- Implementing the search functionality
+- Working out how to implement a delete function without messing up other tables
+
 
 ## Potential implementations for the future
 - Add user authentication to ensure that only the customer with the correct username and password can access their account
