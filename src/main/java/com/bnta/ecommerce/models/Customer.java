@@ -53,6 +53,20 @@ public class Customer {
         this.purchases = purchases;
     }
 
+    public Customer(String name,
+                    String username,
+                    String email,
+                    String password,
+                    String address) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.wallet = 0.00;
+        this.address = address;
+        this.deleted = false;
+    }
+
     public Long getId() {
         return id;
     }

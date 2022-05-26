@@ -1,5 +1,6 @@
 package com.bnta.ecommerce.controllers;
 
+import com.bnta.ecommerce.dto.CustomerDto;
 import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,17 @@ public class CustomerController {
     }
 
     // Add a new customer
-    @PostMapping("/customers")
-    public ResponseEntity postCustomer(@RequestBody Customer customer){
+    @PostMapping("/customers/add_new")
+    public ResponseEntity postCustomer(@RequestBody CustomerDto customerdto){
         try {
-            Customer addedCustomer = customerService.save(customer);
+            Customer newCustomer = new Customer(
+                    customerdto.getName(),
+                    customerdto.getUsername(),
+                    customerdto.getEmail(),
+                    customerdto.getPassword(),
+                    customerdto.getAddress()
+                    );
+            Customer addedCustomer = customerService.save(newCustomer);
             return new ResponseEntity<>(addedCustomer, HttpStatus.CREATED);
         }
         catch (DataIntegrityViolationException dive) {
