@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletionService;
 
 @Service
 public class PurchaseService {
@@ -35,10 +33,12 @@ public class PurchaseService {
 
     public PurchaseService(PurchaseRepository purchaseRepository,
                            StockService stockService,
+                           StockRepository stockRepository,
                            CustomerRepository customerRepository,
                            ProductRepository productRepository) {
         this.purchaseRepository = purchaseRepository;
         this.stockService = stockService;
+        this.stockRepository = stockRepository;
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
     }
@@ -141,6 +141,42 @@ public class PurchaseService {
     }
 
 
+    public String setItemBasketQuantity(String newQuantityString, String customerIdString, String productIDString) {
+
+        Integer newQuantity;
+        Long customerId;
+        Long productId;
+
+        try {
+            newQuantity = Integer.parseInt(newQuantityString);
+            productId = Long.parseLong(productIDString);
+            customerId = Long.parseLong(customerIdString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("Inputs must be numbers.");
+        }
+
+        if (newQuantity <= 0) {
+            throw new RuntimeException("Quantity cannot be less than 1.");
+        }
+
+        if (customerId <= 0 || productId <= 0) {
+            throw new RuntimeException("IDs must be greater than 0.");
+        }
+
+        Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
+
+        if (purchaseOptional.isEmpty()) {
+            throw new RuntimeException("Item no longer in the basket.");
+        }
+
+        Long purchaseId = purchaseOptional.get().getId();
+
+        purchaseRepository.setItemBasketQuantity(newQuantity, purchaseId);
+        return "Item quantity in basket updated!";
+    }
+
+
     public String removeFromBasket(String customerIdString, String productIdString) {
 
         Long customerId;
@@ -161,10 +197,6 @@ public class PurchaseService {
         Optional<Purchase> purchaseOptional = purchaseRepository.findByProductCustomerId(customerId, productId);
 
         if (purchaseOptional.isEmpty()) {
-            throw new RuntimeException("Item no longer in the basket.");
-        }
-
-        if (purchaseOptional.get().getPurchased()) {
             throw new RuntimeException("Item no longer in the basket.");
         }
 

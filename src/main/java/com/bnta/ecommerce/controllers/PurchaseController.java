@@ -1,7 +1,6 @@
 package com.bnta.ecommerce.controllers;
 
 import com.bnta.ecommerce.models.Purchase;
-import com.bnta.ecommerce.models.Stock;
 import com.bnta.ecommerce.services.PurchaseService;
 import com.bnta.ecommerce.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class PurchaseController {
                 "purchaseQuantity": ""
             }
      */
-    @PostMapping("/purchases")
+    @PostMapping("/customer_basket/add_item")
     public ResponseEntity addToBasket(
             @RequestBody(required = true) Map<String, String> payload
     ){
@@ -86,8 +85,7 @@ public class PurchaseController {
     }
 
 
-
-    @DeleteMapping("/purchases")
+    @DeleteMapping("/customer_basket/remove_item")
     public ResponseEntity removeFromBasket(
             @RequestBody(required = true) Map<String, String> payload
     ) {
@@ -106,12 +104,30 @@ public class PurchaseController {
 
 
     // Purchase all items in basket for a particular customer
-    @PutMapping("/purchases")
+    @PutMapping("/customer_basket/purchase_all")
     public ResponseEntity makePurchase(
             @RequestParam(required = true) String customerId
     ) {
         try {
             String status = purchaseService.makePurchase(customerId);
+            return ResponseEntity.status(HttpStatus.OK).body(status);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
+
+    @PutMapping("/customer_basket/alter_item_quantity")
+    public ResponseEntity alterBasketItemQuantity(
+            @RequestBody(required = true) Map<String, String> payload
+    ) {
+        try {
+            String status = purchaseService.setItemBasketQuantity(
+                    payload.get("newQuantity"),
+                    payload.get("customerId"),
+                    payload.get("productId")
+            );
             return ResponseEntity.status(HttpStatus.OK).body(status);
         }
         catch (RuntimeException re) {

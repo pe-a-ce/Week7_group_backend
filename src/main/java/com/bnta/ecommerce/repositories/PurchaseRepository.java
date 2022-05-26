@@ -4,8 +4,6 @@ import com.bnta.ecommerce.models.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.relational.core.sql.In;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,11 +52,13 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     Optional<Purchase> findByProductCustomerId(Long customerId, Long productId);
 
 
+
     @Query(
             value = "SELECT * FROM purchase WHERE customer_id = ?1 AND purchased = FALSE",
             nativeQuery = true
     )
     List<Purchase> getBasketByCustomerId(Long customerId);
+
 
 
     @Transactional
@@ -77,6 +77,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     void addToBasket(Long customerId, Long productId);
 
 
+
     @Transactional
     @Modifying
     @Query(
@@ -84,7 +85,18 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     " SET purchase_quantity = purchase_quantity + ?1 " +
                     " WHERE id = ?2",
             nativeQuery = true)
-    int updateBasketQuantity(Integer change, Long purchaseId);
+    Integer updateBasketQuantity(Integer change, Long purchaseId);
+
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE purchase SET purchase_quantity = ?1 WHERE id = ?2",
+            nativeQuery = true
+    )
+    Integer setItemBasketQuantity(Integer newQuantity, Long purchaseId);
+
 
 
     @Transactional
@@ -96,6 +108,7 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
     Integer removeFromBasket(Long customerId, Long productId);
 
 
+
     @Transactional
     @Modifying
     @Query(
@@ -104,7 +117,8 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     "WHERE customer_id = ?2 AND purchased = FALSE",
             nativeQuery = true
     )
-    int makePurchase(String purchaseDate, Long customerId);
+    Integer makePurchase(String purchaseDate, Long customerId);
+
 
 
     @Transactional
