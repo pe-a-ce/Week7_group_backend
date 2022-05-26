@@ -2,6 +2,7 @@ package com.bnta.ecommerce.services;
 
 import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.repositories.CustomerRepository;
+import com.bnta.ecommerce.repositories.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.relational.core.sql.In;
@@ -18,6 +19,8 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
     public CustomerService() {}
 
@@ -155,15 +158,31 @@ public class CustomerService {
 
 
 
-    public Integer customerSelfDelete(Long id) {
+    public Integer deleteCustomer(Long id, Boolean permanent) {
 
+        Optional<Customer> customerOptional = customerRepository.findById(id);
 
-        return null;
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("Customer does not exist!");
+        }
+
+        if (permanent) {
+            purchaseRepository.deletePurchaseByCustomerId(id);
+            customerRepository.customerPermanentDelete(id);
+            return null;
+        }
+        else {
+            Boolean customerDeleted = customerOptional.get().getDeleted();
+
+            if (customerDeleted) {
+                throw new RuntimeException("Customer is already marked as deleted.");
+            }
+
+            return customerRepository.customerSelfDelete(id);
+        }
+
     }
 
 
-    public Integer customerPermanentDelete(Long id) {
 
-        return null;
-    }
 }

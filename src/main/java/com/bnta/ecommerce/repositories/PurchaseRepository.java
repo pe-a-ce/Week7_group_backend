@@ -4,6 +4,7 @@ import com.bnta.ecommerce.models.Purchase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +94,14 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
             nativeQuery = true
     )
     int makePurchase(String purchaseDate, Long customerId);
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "DELETE FROM purchase WHERE customer_id = ?1",
+            nativeQuery = true
+    )
+    Integer deletePurchaseByCustomerId(Long id);
 }
 

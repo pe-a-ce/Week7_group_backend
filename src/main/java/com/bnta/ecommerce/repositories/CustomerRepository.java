@@ -83,5 +83,21 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Integer updateCustomerMobile(Long mobile, Long id);
 
 
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET deleted = TRUE WHERE id = ?1",
+            nativeQuery = true
+    )
+    Integer customerSelfDelete(Long id);
+
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "DELETE FROM customer WHERE id = ?1",
+            nativeQuery = true
+    )
+    Integer customerPermanentDelete(Long id);
 
 }

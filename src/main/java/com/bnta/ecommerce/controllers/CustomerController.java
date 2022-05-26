@@ -147,17 +147,25 @@ public class CustomerController {
 
     @DeleteMapping("/customer/{id}")
     public ResponseEntity customerSelfDelete(@PathVariable Long id) {
-
-
-        return null;
+        try {
+            customerService.deleteCustomer(id, false);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
 
     @DeleteMapping("/admin/customer/{id}")
     public ResponseEntity customerPermenantDelete(@PathVariable Long id) {
-
-
-        return null;
+        try {
+            customerService.deleteCustomer(id, true);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }
 
