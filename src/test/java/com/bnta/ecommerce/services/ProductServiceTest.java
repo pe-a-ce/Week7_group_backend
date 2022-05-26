@@ -20,22 +20,18 @@ class ProductServiceTest {
     }
 
     @Test
-    void searchByManufacturerAndModel() throws Exception {
+    void alterProduct() throws Exception {
 
-        Product product1 = productService.searchByManufacturerAndModel("Mitsubishi", "Eclipse").get(1);
+        Product product1 = productService.alterProduct(41L, "Audi", "A3", 126.89);
 
-        assertAll("should bring up car details; price and id",
-                ()-> assertEquals("Mitsubishi", product1.getManufacturer()),
-                ()-> assertEquals("Eclipse", product1.getModel()),
-                ()-> assertEquals(654, product1.getId()),
-                ()-> assertEquals(17.42, product1.getPrice())
-        );
+//      "should change price of audi a3 with id 41, from £12.51 to £126.89",
+              assertEquals(126.89, product1.getPrice());
     }
         @Test
         void testExpectedException_withFakeManufacter_Model() {
 
             Exception thrown = Assertions.assertThrows(Exception.class, () -> {
-                productService.searchByManufacturerAndModel("DiamondMake", "Shiny").get(0);
+                productService.searchForProducts("DiamondMake Shiny").get(0);
             });
 
             Assertions.assertEquals("No cars found!", thrown.getMessage());

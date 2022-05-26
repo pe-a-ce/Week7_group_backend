@@ -31,7 +31,7 @@ public class PurchaseController {
 
 
     @GetMapping("/purchase/{id}") // Get Purchase by ID
-    public ResponseEntity<Purchase> findByPurchaseId(@PathVariable Long id){
+    public ResponseEntity<Purchase> findByPurchasceId(@PathVariable Long id){
         Optional<Purchase> purchaseIdOptional = purchaseService.findByPurchaseId(id);
         if (purchaseIdOptional.isPresent()){
             return ResponseEntity.ok().body(purchaseIdOptional.get());
