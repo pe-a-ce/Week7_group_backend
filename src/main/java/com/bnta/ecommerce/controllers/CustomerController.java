@@ -1,5 +1,6 @@
 package com.bnta.ecommerce.controllers;
 
+import com.bnta.ecommerce.dto.CusInfoChangeDto;
 import com.bnta.ecommerce.dto.CusSecEmailPasswordDto;
 import com.bnta.ecommerce.dto.CusSecEmailUsernameDto;
 import com.bnta.ecommerce.dto.CustomerDto;
@@ -131,9 +132,9 @@ public class CustomerController {
     // Information includes: name, address, number
 
     @PutMapping("/customers/info/name")
-    public ResponseEntity updateCustomerName(@RequestBody Map<String, String> payload) {
+    public ResponseEntity updateCustomerName(@RequestBody CusInfoChangeDto cusInfoChangeDto) {
         try {
-            customerService.updateCustomerName(payload.get("email"), payload.get("name"));
+            customerService.updateCustomerName(cusInfoChangeDto.getEmail(), cusInfoChangeDto.getChangeTo());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (RuntimeException re) {
@@ -142,9 +143,9 @@ public class CustomerController {
     }
 
     @PutMapping("/customers/info/address")
-    public ResponseEntity updateCustomerAddress(@RequestBody Map<String, String> payload) {
+    public ResponseEntity updateCustomerAddress(@RequestBody CusInfoChangeDto cusInfoChangeDto) {
         try {
-            customerService.updateCustomerAddress(payload.get("email"), payload.get("address"));
+            customerService.updateCustomerAddress(cusInfoChangeDto.getEmail(), cusInfoChangeDto.getChangeTo());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (RuntimeException re) {
@@ -153,9 +154,9 @@ public class CustomerController {
     }
 
     @PutMapping("/customers/info/mobile")
-    public ResponseEntity updateCustomerMobile(@RequestBody Map<String, String> payload) {
+    public ResponseEntity updateCustomerMobile(@RequestBody CusInfoChangeDto cusInfoChangeDto) {
         try {
-            customerService.updateCustomerMobile(payload.get("email"), payload.get("mobile"));
+            customerService.updateCustomerMobile(cusInfoChangeDto.getEmail(), cusInfoChangeDto.getChangeTo());
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         catch (RuntimeException re) {
