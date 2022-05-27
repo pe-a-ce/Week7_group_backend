@@ -73,12 +73,12 @@ public class PurchaseController {
     @PostMapping("/customer_basket/add_item")
     public ResponseEntity addToBasket(
             @RequestBody(required = true) AddToBasketDto addToBasketDto
-            ){
+    ){
         try {
             String status = purchaseService.addToBasket(
                     addToBasketDto.getCustomerId(),
                     addToBasketDto.getProductId(),
-                    addToBasketDto.getProductId()
+                    addToBasketDto.getPurchaseQuantity()
             );
             return ResponseEntity.status(HttpStatus.OK).body(status);
         }

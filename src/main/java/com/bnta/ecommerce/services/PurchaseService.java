@@ -136,7 +136,7 @@ public class PurchaseService {
             purchaseRepository.updateBasketQuantity(purchaseQuantity, purchaseOptional.get().getId());
             return "Purchase quantity updated.";
         }
-        purchaseRepository.addToBasket(customerId, productId);
+        purchaseRepository.addToBasket(purchaseQuantity, customerId, productId);
         return "Item added to basket!";
     }
 

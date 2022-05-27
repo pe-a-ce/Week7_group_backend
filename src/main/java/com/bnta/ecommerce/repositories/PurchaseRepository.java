@@ -71,10 +71,10 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
                     " purchased_date, " +
                     " customer_id, " +
                     " product_id) " +
-                    " values (1, FALSE, null, ?1, ?2) ",
+                    " values (?1, FALSE, null, ?2, ?3) ",
             nativeQuery = true
     )
-    void addToBasket(Long customerId, Long productId);
+    void addToBasket(Integer quantity, Long customerId, Long productId);
 
 
 
