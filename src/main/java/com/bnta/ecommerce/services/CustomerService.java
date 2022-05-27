@@ -36,6 +36,9 @@ public class CustomerService {
         return customerRepository.findById(id);
     }
 
+    public Optional<Customer> findByEmailAndPassword(String email, String password) {
+        return customerRepository.findByEmailAndPassword(email, password);
+    }
 
     public Customer save(Customer customer) throws DataIntegrityViolationException {
 

@@ -40,6 +40,22 @@ public class CustomerController {
         return ResponseEntity.notFound().build();
     }
 
+
+    @GetMapping("/customers/login")
+    public ResponseEntity findByEmailAndPassword(
+            @RequestBody CusSecEmailPasswordDto cusSecEmailPasswordDto
+    ) {
+        Optional<Customer> customerOptional = customerService.findByEmailAndPassword(
+                cusSecEmailPasswordDto.getEmail(),
+                cusSecEmailPasswordDto.getPassword()
+        );
+        if (customerOptional.isPresent()){
+            return ResponseEntity.ok().body(customerOptional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
     // Add a new customer
     @PostMapping("/customers/add_new")
     public ResponseEntity postCustomer(@RequestBody CustomerDto customerdto){
