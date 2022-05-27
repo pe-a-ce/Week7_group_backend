@@ -72,6 +72,18 @@ public class PurchaseController {
         }
     }
 
+
+    @GetMapping("/customer/get_basket/{customer_id}")
+    public ResponseEntity customerGetBasket(@PathVariable Long customer_id) {
+        try {
+            List<Purchase> purchases = purchaseService.getBasketForCustomer(customer_id);
+            return ResponseEntity.status(HttpStatus.OK).body(purchases);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
     // Add new item to basket
     /*
             payload

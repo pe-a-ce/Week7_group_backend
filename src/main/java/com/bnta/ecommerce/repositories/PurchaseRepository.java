@@ -53,10 +53,18 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
 
     @Query(
-            value = "SELECT * FROM purchase WHERE customer_id = ?1 AND purchased = TRUE;",
+            value = "SELECT * FROM purchase WHERE customer_id = ?1 AND purchased = TRUE",
             nativeQuery = true
     )
     List<Purchase> getAllPurchasesForCustomer(Long customerId);
+
+
+    @Query(
+            value = "SELECT * FROM purchase WHERE customer_id = ?1 AND purchased = FALSE",
+            nativeQuery = true
+    )
+    List<Purchase> getBasketForCustomer(Long customerId);
+
 
 
     @Query(
