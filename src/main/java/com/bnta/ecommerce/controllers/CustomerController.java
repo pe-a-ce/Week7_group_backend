@@ -53,6 +53,7 @@ public class CustomerController {
                     );
             Customer addedCustomer = customerService.save(newCustomer);
             addedCustomer.setPassword("*******");
+            addedCustomer.setAddress("******** *******");
             return new ResponseEntity<>(addedCustomer, HttpStatus.CREATED);
         }
         catch (DataIntegrityViolationException dive) {
