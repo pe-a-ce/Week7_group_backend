@@ -96,7 +96,7 @@ public class  ProductService {
 
     public List<Product> searchForProducts(String query) throws Exception{
         List<Product> results = Arrays.stream(query.split(" "))
-                .map(q -> productRepository.findEitherManufacturerOrModel("%" + q.trim() + "%"))
+                .map(q -> productRepository.findEitherManufacturerOrModel(q.trim()))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
         if (results.isEmpty()){
