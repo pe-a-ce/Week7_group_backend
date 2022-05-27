@@ -169,10 +169,11 @@ public class CustomerController {
     public ResponseEntity customerSelfDelete(@PathVariable Long id) {
         try {
             customerService.deleteCustomer(id, false);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            System.out.println(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Account marked as deleted.");
         }
         catch (RuntimeException re) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
         }
     }
 
