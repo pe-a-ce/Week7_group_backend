@@ -25,12 +25,12 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/get_all_products")
     public ResponseEntity<List<Product>> getAllProducts(){
         return ResponseEntity.ok().body(productService.getAllProducts());
     }
 
-    @GetMapping("/search") // Get list of Products, by various optional parameters
+    @GetMapping("/filter_products") // Get list of Products, by various optional parameters
     public ResponseEntity<List<Product>> getProducts(
             @RequestParam(required = false, name = "Show only in-stock items", defaultValue = "false") Boolean inStockRequired,
             @RequestParam(required = false, name = "Manufacturer") String manufacturer,
@@ -45,7 +45,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/fieldSearch") // Get list of matching Products from single search query
+    @GetMapping("/field_search") // Get list of matching Products from single search query
     public ResponseEntity<List<Product>> searchAllProducts(@RequestParam (name = "Search all cars") String query){
         try{
             return ResponseEntity.ok().body(productService.searchForProducts(query));
@@ -54,7 +54,7 @@ public class ProductController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/create_product")
     public ResponseEntity<Product> createProduct(@RequestBody Product product){
         try {
             return ResponseEntity.ok().body(productService.createProduct(product));
@@ -63,7 +63,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/put")
+    @PutMapping("/change_product_attributes")
     public ResponseEntity<Product> changeProductAttributes(
             @RequestParam(name = "Product ID") Long id,
             @RequestParam(required = false, name = "Manufacturer") String manufacturer,
