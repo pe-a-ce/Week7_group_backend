@@ -1,5 +1,8 @@
 package com.bnta.ecommerce.controllers;
 
+import com.bnta.ecommerce.dto.AddToBasketDto;
+import com.bnta.ecommerce.dto.AlterBasketQuantityDto;
+import com.bnta.ecommerce.dto.RemoveFromBasketDto;
 import com.bnta.ecommerce.models.Purchase;
 import com.bnta.ecommerce.services.PurchaseService;
 import com.bnta.ecommerce.services.StockService;
@@ -69,13 +72,13 @@ public class PurchaseController {
      */
     @PostMapping("/customer_basket/add_item")
     public ResponseEntity addToBasket(
-            @RequestBody(required = true) Map<String, String> payload
-    ){
+            @RequestBody(required = true) AddToBasketDto addToBasketDto
+            ){
         try {
             String status = purchaseService.addToBasket(
-                    payload.get("customerId"),
-                    payload.get("productId"),
-                    payload.get("purchaseQuantity")
+                    addToBasketDto.getCustomerId(),
+                    addToBasketDto.getProductId(),
+                    addToBasketDto.getProductId()
             );
             return ResponseEntity.status(HttpStatus.OK).body(status);
         }
@@ -87,12 +90,12 @@ public class PurchaseController {
 
     @DeleteMapping("/customer_basket/remove_item")
     public ResponseEntity removeFromBasket(
-            @RequestBody(required = true) Map<String, String> payload
-    ) {
+            @RequestBody(required = true)RemoveFromBasketDto removeFromBasketDto
+            ) {
         try {
             String status = purchaseService.removeFromBasket(
-                    payload.get("customerId"),
-                    payload.get("productId")
+                    removeFromBasketDto.getCustomerId(),
+                    removeFromBasketDto.getProductId()
             );
             return ResponseEntity.status(HttpStatus.OK).body(status);
         }
@@ -120,13 +123,13 @@ public class PurchaseController {
 
     @PutMapping("/customer_basket/alter_item_quantity")
     public ResponseEntity alterBasketItemQuantity(
-            @RequestBody(required = true) Map<String, String> payload
-    ) {
+            @RequestBody(required = true) AlterBasketQuantityDto alterBasketQuantityDto
+            ) {
         try {
             String status = purchaseService.setItemBasketQuantity(
-                    payload.get("newQuantity"),
-                    payload.get("customerId"),
-                    payload.get("productId")
+                    alterBasketQuantityDto.getNewQuantity(),
+                    alterBasketQuantityDto.getCustomerId(),
+                    alterBasketQuantityDto.getProductId()
             );
             return ResponseEntity.status(HttpStatus.OK).body(status);
         }
