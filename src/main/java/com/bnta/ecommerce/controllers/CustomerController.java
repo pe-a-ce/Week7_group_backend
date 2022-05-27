@@ -41,7 +41,7 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/customers/login")
+    @PostMapping("/customers/login")
     public ResponseEntity findByEmailAndPassword(
             @RequestBody CusSecEmailPasswordDto cusSecEmailPasswordDto
     ) {
