@@ -77,14 +77,15 @@ public class CustomerService {
             throw new RuntimeException("This account no longer exists or the email may be wrong, please try again.");
         }
 
+        if(customerOptional.get().getDeleted()) {
+            throw new RuntimeException("This account has been removed, please contact support.");
+        }
+
         customerRepository.customerAddCredit(credit, customerEmail);
-        Customer updatedCustomer = customerRepository.findByEmail(customerEmail).get();
 
         return "You have successfully added " +
                 credit +
-                "to your account! You now have " +
-                updatedCustomer.getWallet() +
-                " in your account.";
+                " to your account!";
     }
 
 
