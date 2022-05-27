@@ -24,6 +24,16 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     )
     Optional<Customer> findByUsername(String username);
 
+
+    @Transactional
+    @Modifying
+    @Query(
+            value = "UPDATE customer SET wallet = wallet + ?1 WHERE email = ?2",
+            nativeQuery = true
+    )
+    Integer customerAddCredit(Double credit, String email);
+
+
     @Transactional
     @Modifying
     @Query(

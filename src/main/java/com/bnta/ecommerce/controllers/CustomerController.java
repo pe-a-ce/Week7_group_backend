@@ -1,9 +1,6 @@
 package com.bnta.ecommerce.controllers;
 
-import com.bnta.ecommerce.dto.CusInfoChangeDto;
-import com.bnta.ecommerce.dto.CusSecEmailPasswordDto;
-import com.bnta.ecommerce.dto.CusSecEmailUsernameDto;
-import com.bnta.ecommerce.dto.CustomerDto;
+import com.bnta.ecommerce.dto.*;
 import com.bnta.ecommerce.models.Customer;
 import com.bnta.ecommerce.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -187,6 +183,24 @@ public class CustomerController {
         catch (RuntimeException re) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+
+    @PutMapping("/customers/info/add_credit")
+    public ResponseEntity customerAddCredit(
+            @RequestBody CustomerAddCreditDto customerAddCreditDto
+    ) {
+        try {
+            String status = customerService.customerAddCredit(
+                    customerAddCreditDto.getCredit(),
+                    customerAddCreditDto.getEmail()
+            );
+            return ResponseEntity.status(HttpStatus.OK).body(status);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+
     }
 }
 

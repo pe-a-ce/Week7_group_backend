@@ -56,6 +56,36 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
+    public String customerAddCredit(String creditString, String customerEmail) {
+
+        Double credit;
+
+        try {
+            credit = Double.parseDouble(creditString);
+        }
+        catch (NumberFormatException nfe) {
+            throw new RuntimeException("Credit must be numbers.");
+        }
+
+        if (credit <= 0.0) {
+            throw new RuntimeException("Credit must be greater than 0.");
+        }
+
+        Optional<Customer> customerOptional = customerRepository.findByEmail(customerEmail);
+
+        if (customerOptional.isEmpty()) {
+            throw new RuntimeException("This account no longer exists or the email may be wrong, please try again.");
+        }
+
+        customerRepository.customerAddCredit(credit, customerEmail);
+        Customer updatedCustomer = customerRepository.findByEmail(customerEmail).get();
+
+        return "You have successfully added " +
+                credit +
+                "to your account! You now have " +
+                updatedCustomer.getWallet() +
+                " in your account.";
+    }
 
 
     public Integer updateCustomerUsername(String username, String email) {
