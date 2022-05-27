@@ -36,7 +36,7 @@ public class CustomerController {
 
     // Get all customers by ID
     @GetMapping("/customers/{id}")
-    public ResponseEntity<Customer> findByID(@PathVariable Long id){
+    public ResponseEntity findByID(@PathVariable Long id){
         Optional<Customer> customerOptional = customerService.findById(id);
         if (customerOptional.isPresent()){
             return ResponseEntity.ok().body(customerOptional.get());
