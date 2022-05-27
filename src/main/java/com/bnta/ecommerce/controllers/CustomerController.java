@@ -50,6 +50,9 @@ public class CustomerController {
                 cusSecEmailPasswordDto.getPassword()
         );
         if (customerOptional.isPresent()){
+            Customer customerInfo = customerOptional.get();
+            customerInfo.setPassword("******");
+            customerInfo.setAddress("***** ******");
             return ResponseEntity.ok().body(customerOptional.get());
         }
         return ResponseEntity.notFound().build();
