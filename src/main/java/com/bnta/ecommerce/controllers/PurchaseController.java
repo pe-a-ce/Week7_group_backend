@@ -61,6 +61,17 @@ public class PurchaseController {
     }
 
 
+    @GetMapping("/customer/get_all_purchased/{customer_id}")
+    public ResponseEntity customerGetAllPurchased(@PathVariable Long customer_id) {
+        try {
+            List<Purchase> purchases = purchaseService.getAllPurchasesForCustomer(customer_id);
+            return ResponseEntity.status(HttpStatus.OK).body(purchases);
+        }
+        catch (RuntimeException re) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(re.getMessage());
+        }
+    }
+
     // Add new item to basket
     /*
             payload

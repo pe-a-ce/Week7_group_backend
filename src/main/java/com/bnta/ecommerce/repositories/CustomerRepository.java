@@ -33,7 +33,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     )
     Integer customerAddCredit(Double credit, String email);
 
-
     @Transactional
     @Modifying
     @Query(

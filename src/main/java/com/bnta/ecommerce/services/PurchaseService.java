@@ -98,6 +98,16 @@ public class PurchaseService {
     }
 
 
+    public List<Purchase> getAllPurchasesForCustomer(Long customerId) {
+
+        if (customerId < 1) {
+            throw new RuntimeException("ID must be greater than 1.");
+        }
+
+        return purchaseRepository.getAllPurchasesForCustomer(customerId);
+    }
+
+
     public String addToBasket(String customerIdString, String productIdString, String purchaseQuantityString) {
         Long customerId;
         Long productId;
