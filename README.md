@@ -1,6 +1,6 @@
 # Back End E-Commerce Car Shop
 
-## Back Seat Programmers
+## The Back Seat Programmers:
 - [Haining Harry Zhen]( https://github.com/hainingzhen )
 - [Peace Akib]( https://github.com/pe-a-ce )  
 - [Katya Grenier](https://github.com/katyagr ) 
