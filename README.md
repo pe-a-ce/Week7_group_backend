@@ -10,7 +10,7 @@
 
 ### What our application does
 
-Our application manages the database for products and stock held by an online car dealership. The front-end UI can view and manage the database, which includes tables for registered customers, purchases and cars stocked by the seller. 
+Our application manages the database for products and stock held by an online car dealership. The front-end UI can view and manage the database, which includes tables for registered customers, purchases and cars stocked by the dealer. 
 
 ![image]( https://user-images.githubusercontent.com/99202770/170478041-b67cdd1c-6e83-4149-8556-0a045f7a2444.jpeg )
 
