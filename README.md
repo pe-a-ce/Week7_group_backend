@@ -283,7 +283,6 @@ Depending on the information being altered, the 'changeTo' field should contain 
 **Other code** - Failed to change customer information (check error message returned.)
 
 
----
 ## 3. Add more credit to customer's account
 
 ![customer_security](images/customer_credit.png)
