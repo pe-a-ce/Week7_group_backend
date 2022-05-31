@@ -62,8 +62,8 @@ In order to create this project, we used Java with the SpringBoot framework. We 
 
 ![image]( https://user-images.githubusercontent.com/99202770/170468083-cf68368a-591f-4e2e-bd39-27ee0f471831.jpeg )
 
-
-## Project Setup
+---
+# Project Setup
 
 1. Clone the files and ensure you are working with Java version 18. 
 
