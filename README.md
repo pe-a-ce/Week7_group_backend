@@ -84,7 +84,7 @@ createdb group_backend;
 
 ### The following endpoints uses JSON as input. 
 ### Other endpoints utilises request parameters or path variables. 
-### Please see [Swagger-UI](http://localhost:8080/swagger-ui/index.html#/customer-controller/postCustomer) for more information.
+### Please see [Swagger-UI](http://localhost:8080/swagger-ui/index.html#/) for more information.
 
 ---
 ---
@@ -110,7 +110,7 @@ localhost:8080/customers/add_new
 }
 ```
 
-#### Response
+#### Example Response
 
 **201** - Successfully created a new user
 
@@ -137,6 +137,8 @@ ERROR: duplicate key value violates unique constraint "uk_dwk6cx0afu8bs9o4t536v1
 ```
 
 #### If successful, you now have a customer's information to access other endpoint's functionality.
+
+---
 
 ### 2. Retrieving existing customer information
 
@@ -176,26 +178,67 @@ localhost:8080/customers/login
 ```
 No response body
 ```
-
+#### If successful, you now have a customer's information to access other endpoint's functionality.
 
 ---
 ---
 
 
-### **IMPORTANT**: The following endpoints require customer information as inputs
+### **IMPORTANT**: The following endpoints require customer information as inputs.
 
-## X. Changing customer security information
+## 1. Changing customer security information
 
 ![customer_security](images/customer_security.png)
 
-
-### Change customer's username
+### - Change customer's username -
 #### Endpoint
 ```
 localhost:8080/customers/security/username
 ```
 #### Input
 Customer's email is required to change the username.
+
+The new username goes in the username field.
+```
+{
+  "email": "",
+  "username": ""
+}
+```
+#### Response
+**200** - Successfully changed the username.
+
+**Other code** - Failed to change username (check error message returned.)
+
+### - Change customer's password -
+#### Endpoint
+```
+localhost:8080/customers/security/password
+```
+#### Input
+Customer's email is required to change the password.
+
+The new password goes in the password field.
+```
+{
+  "email": "",
+  "password": ""
+}
+```
+#### Response
+**200** - Successfully changed the password.
+
+**Other code** - Failed to change password (check error message returned.)
+
+### - Change customer's email -
+#### Endpoint
+```
+localhost:8080/customers/security/email
+```
+#### Input
+Customer's username is required to change the email.
+
+The new email goes in the email field.
 ```
 {
   "email": "",
@@ -204,25 +247,67 @@ Customer's email is required to change the username.
 ```
 #### Response
 
-#### Change customer's password
-```
-localhost:8080/customers/security/password
-```
-#### Change customer's email
-```
-localhost:8080/customers/security/email
-```
+**200** - Successfully changed the email.
 
-## X. Changing customer information
+**Other code** - Failed to change email (check error message returned.)
+
+## 2. Changing customer information
 
 ![customer_security](images/customer_info.png)
 
-## X. Add more credit to customer's account
+The above three endpoints uses the same JSON as input.
+
+#### Endpoints
+```
+localhost:8080/customers/info/name
+
+localhost:8080/customers/info/mobile
+
+localhost:8080/customers/info/address
+```
+
+#### Input
+The customer's email is required to change customer info.
+
+Depending on the information being altered, the 'changeTo' field should contain the new value.
+```
+{
+  "email": "",
+  "changeTo": ""
+}
+```
+#### Response
+
+**200** - Successfully change customer's information
+
+**Other code** - Failed to change customer information (check error message returned.)
+
+
+---
+## 3. Add more credit to customer's account
 
 ![customer_security](images/customer_credit.png)
 
----
----
+#### Endpoints
+```
+localhost:8080/customers/info/add_credit
+```
 
+#### Input
+The customer's email is required to add more credit.
 
+The credit field should contain the extra credit being added to the account.
+```
+{
+  "email": "",
+  "credit": ""
+}
+```
+#### Response
+
+**200** - Credit added to account successfully.
+
+**Other code** - Failed to add credit to customer's account (check error message returned.)
+
+---
 
